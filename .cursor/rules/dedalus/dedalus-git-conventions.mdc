@@ -1,6 +1,7 @@
 ---
 description: Dedalus git commit conventions including Conventional Commits format with ticket number requirements (HDEFECT/HFW)
 alwaysApply: true
+ruleSet: dedalus
 ---
 
 # Git Commit Instructions (Conventional Commits)

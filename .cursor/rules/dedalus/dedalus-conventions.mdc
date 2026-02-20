@@ -2,6 +2,7 @@
 description: Dedalus-specific coding conventions including project structure, Angular patterns, testing requirements, and documentation standards
 alwaysApply: false
 globs: "**/*.ts,**/*.tsx,**/*.scss"
+ruleSet: dedalus
 ---
 
 # Dedalus Coding Conventions

@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "activeSet": "private",
+    "excludeSets": ["dedalus"],
+    "note": "Set activeSet to 'private' or 'dedalus' and update excludeSets accordingly. Copy this file to .cursor/config.json in your project (not in the submodule)."
+  }
+}

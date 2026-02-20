@@ -1,6 +1,7 @@
 ---
 description: Documentation standards including code comments, README structure, API documentation, and documentation best practices
 alwaysApply: true
+ruleSet: private
 ---
 
 # Documentation Standards

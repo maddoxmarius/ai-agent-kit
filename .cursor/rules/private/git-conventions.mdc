@@ -1,6 +1,7 @@
 ---
 description: Git workflow standards including commit message format, branch naming conventions, and PR best practices
 alwaysApply: true
+ruleSet: private
 ---
 
 # Git Conventions

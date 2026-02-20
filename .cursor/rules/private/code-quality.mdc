@@ -1,6 +1,7 @@
 ---
 description: Universal code quality standards including error handling, code organization, naming conventions, and complexity guidelines
 alwaysApply: true
+ruleSet: private
 ---
 
 # Code Quality Standards

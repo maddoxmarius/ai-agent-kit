@@ -2,6 +2,7 @@
 description: U Client Framework (CFW) design system guidelines including component naming, color system, typography, layout patterns, theming, and accessibility requirements
 alwaysApply: false
 globs: "**/*.ts,**/*.tsx,**/*.scss,**/*.css,**/*.html"
+ruleSet: dedalus
 ---
 
 # CFW Design System Guidelines

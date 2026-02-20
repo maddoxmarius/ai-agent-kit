@@ -2,6 +2,7 @@
 description: CFW component usage patterns including import conventions, component APIs, form inputs, grids, and modal patterns
 alwaysApply: false
 globs: "**/*.ts,**/*.tsx,**/*.html"
+ruleSet: dedalus
 ---
 
 # CFW Component Usage Patterns

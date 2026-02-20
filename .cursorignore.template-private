@@ -1,0 +1,10 @@
+# Cursor Ignore Template for Private Projects
+# Copy this file to your project root as .cursorignore
+# This prevents Cursor from loading Dedalus rules from the submodule
+
+# Exclude Dedalus rules from submodule
+.ai-agent-kit/.cursor/rules/dedalus/
+
+# Optional: Exclude Dedalus instructions if using Copilot
+.ai-agent-kit/.github/instructions/dedalus/
+.ai-agent-kit/.github/copilot-instructions-dedalus.md

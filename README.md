@@ -33,6 +33,9 @@ git submodule add git@github.com:maddoxmarius/ai-agent-kit.git .ai-agent-kit
 # Symlink private rules for Cursor
 ln -s .ai-agent-kit/.cursor/rules/private .cursor/rules
 
+# Create .cursorignore to prevent loading Dedalus rules
+cp .ai-agent-kit/.cursorignore.template-private .cursorignore
+
 # Symlink private instructions for Copilot
 ln -s .ai-agent-kit/.github/instructions/private .github/instructions
 ```
@@ -45,6 +48,9 @@ git submodule add git@github.com:maddoxmarius/ai-agent-kit.git .ai-agent-kit
 
 # Symlink dedalus rules for Cursor
 ln -s .ai-agent-kit/.cursor/rules/dedalus .cursor/rules
+
+# Create .cursorignore to prevent loading Private rules
+cp .ai-agent-kit/.cursorignore.template-dedalus .cursorignore
 
 # Symlink dedalus instructions for Copilot
 ln -s .ai-agent-kit/.github/instructions/dedalus .github/instructions
@@ -64,6 +70,22 @@ cp .ai-agent-kit/.github/copilot-instructions-dedalus.md .github/copilot-instruc
 - Verify `.github/copilot-instructions.md` exists
 - Check that path-specific instructions in `.github/instructions/` are recognized
 - Copilot should apply instructions automatically
+
+## Preventing Rule Conflicts
+
+If Cursor is loading rules from both `private/` and `dedalus/` directories, create a `.cursorignore` file in your project root:
+
+**For Private Projects:**
+```bash
+cp .ai-agent-kit/.cursorignore.template-private .cursorignore
+```
+
+**For Dedalus Projects:**
+```bash
+cp .ai-agent-kit/.cursorignore.template-dedalus .cursorignore
+```
+
+This prevents Cursor from scanning the unwanted rule set in the submodule. See [SETUP.md](SETUP.md) for more details and alternative solutions.
 
 ## Detailed Setup
 

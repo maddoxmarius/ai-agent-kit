@@ -2,6 +2,7 @@
 description: CFW styling guidelines including CSS variable usage, utility classes, custom styles, and theme customization
 alwaysApply: false
 globs: "**/*.scss,**/*.css"
+ruleSet: dedalus
 ---
 
 # CFW Styling Guidelines

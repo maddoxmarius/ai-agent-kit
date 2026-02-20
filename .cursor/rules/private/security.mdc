@@ -1,6 +1,7 @@
 ---
 description: Security best practices including input validation, secret management, dependency security, and common vulnerabilities
 alwaysApply: true
+ruleSet: private
 ---
 
 # Security Best Practices

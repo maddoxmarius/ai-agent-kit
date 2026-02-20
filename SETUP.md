@@ -26,17 +26,20 @@ Symlinking preserves the connection to the submodule and allows easy updates.
 
 ```bash
 # 1. Add the submodule
-git submodule add <repository-url> .ai-agent-kit
+git submodule add git@github.com:maddoxmarius/ai-agent-kit.git .ai-agent-kit
 
 # 2. Create symlink for private Cursor rules
 ln -s .ai-agent-kit/.cursor/rules/private .cursor/rules
 
-# 3. Verify the symlink
+# 3. Create .cursorignore to prevent loading Dedalus rules
+cp .ai-agent-kit/.cursorignore.template-private .cursorignore
+
+# 4. Verify the symlink
 ls -la .cursor/rules
 # Should show: .cursor/rules -> .ai-agent-kit/.cursor/rules/private
 
-# 4. Commit the submodule reference
-git add .gitmodules .ai-agent-kit .cursor
+# 5. Commit the submodule reference and .cursorignore
+git add .gitmodules .ai-agent-kit .cursor .cursorignore
 git commit -m "Add AI Agent Kit submodule for Cursor (private rules)"
 ```
 
@@ -62,17 +65,20 @@ git commit -m "Add AI Agent Kit submodule for Copilot (private rules)"
 
 ```bash
 # 1. Add the submodule
-git submodule add <repository-url> .ai-agent-kit
+git submodule add git@github.com:maddoxmarius/ai-agent-kit.git .ai-agent-kit
 
 # 2. Create symlink for Dedalus Cursor rules
 ln -s .ai-agent-kit/.cursor/rules/dedalus .cursor/rules
 
-# 3. Verify the symlink
+# 3. Create .cursorignore to prevent loading Private rules
+cp .ai-agent-kit/.cursorignore.template-dedalus .cursorignore
+
+# 4. Verify the symlink
 ls -la .cursor/rules
 # Should show: .cursor/rules -> .ai-agent-kit/.cursor/rules/dedalus
 
-# 4. Commit the submodule reference
-git add .gitmodules .ai-agent-kit .cursor
+# 5. Commit the submodule reference and .cursorignore
+git add .gitmodules .ai-agent-kit .cursor .cursorignore
 git commit -m "Add AI Agent Kit submodule for Cursor (Dedalus rules)"
 ```
 
@@ -215,13 +221,73 @@ git submodule update
 git clone --recurse-submodules <your-repo-url>
 ```
 
+### Preventing Rule Conflicts
+
+If Cursor is loading rules from both `private/` and `dedalus/` directories in the submodule, use one of these solutions:
+
+#### Solution 1: Use .cursorignore (Recommended)
+
+Create a `.cursorignore` file in your project root (not in the submodule) to exclude the unwanted rule set:
+
+**For Private Projects:**
+```bash
+# Create .cursorignore in your project root
+cat > .cursorignore << 'EOF'
+# Exclude Dedalus rules from submodule
+.ai-agent-kit/.cursor/rules/dedalus/
+.ai-agent-kit/.github/instructions/dedalus/
+.ai-agent-kit/.github/copilot-instructions-dedalus.md
+EOF
+```
+
+**For Dedalus Projects:**
+```bash
+# Create .cursorignore in your project root
+cat > .cursorignore << 'EOF'
+# Exclude Private rules from submodule
+.ai-agent-kit/.cursor/rules/private/
+.ai-agent-kit/.github/instructions/private/
+EOF
+```
+
+Templates are available in the kit:
+- `.cursorignore.template-private` - Copy to your project as `.cursorignore`
+- `.cursorignore.template-dedalus` - Copy to your project as `.cursorignore`
+
+#### Solution 2: Configuration File (If Supported)
+
+Copy `.cursor/config.json.template` to `.cursor/config.json` in your project and customize:
+
+```json
+{
+  "rules": {
+    "activeSet": "private",
+    "excludeSets": ["dedalus"]
+  }
+}
+```
+
+**Note**: Verify that Cursor reads this config file. If not supported, use Solution 1.
+
+#### Solution 3: Ensure Correct Symlinks
+
+Make sure your symlinks point to the correct rule set:
+
+```bash
+# Verify symlink points to correct directory
+ls -la .cursor/rules
+# Should show: .cursor/rules -> .ai-agent-kit/.cursor/rules/private
+# OR: .cursor/rules -> .ai-agent-kit/.cursor/rules/dedalus
+```
+
 ### Cursor Not Recognizing Rules
 
 1. Verify symlink is correct: `ls -la .cursor/rules`
 2. Check symlink points to correct directory (private or dedalus)
 3. Check rule files exist: `ls .cursor/rules/`
 4. Ensure rule files have `.mdc` extension
-5. Restart Cursor
+5. Check `.cursorignore` doesn't exclude your rules
+6. Restart Cursor
 
 ### Copilot Not Applying Instructions
 
