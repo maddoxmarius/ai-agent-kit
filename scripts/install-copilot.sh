@@ -15,6 +15,7 @@ fi
 RULES_SRC="$KIT/rules/$CONTEXT"
 GITHUB_DST="$PROJECT_ROOT/.github"
 INSTRUCTIONS_DST="$GITHUB_DST/instructions"
+MAIN_DST="$GITHUB_DST/copilot-instructions.md"
 
 if [[ ! -d "$RULES_SRC" ]]; then
   echo "Error: rules not found at $RULES_SRC (kit at $KIT)"
@@ -23,10 +24,34 @@ fi
 
 mkdir -p "$INSTRUCTIONS_DST"
 
+strip_frontmatter() {
+  if [[ -r "$1" ]]; then
+    awk '/^---$/{ if (++n == 2) next } n < 2 { next } 1' "$1"
+  fi
+}
+
 if [[ -f "$RULES_SRC/_main.md" ]]; then
-  cp "$RULES_SRC/_main.md" "$GITHUB_DST/copilot-instructions.md"
-  echo "  installed: .github/copilot-instructions.md"
+  cp "$RULES_SRC/_main.md" "$MAIN_DST"
+  echo "  installed: .github/copilot-instructions.md (from _main.md)"
 fi
+
+for f in "$RULES_SRC"/*.md; do
+  [[ -e "$f" ]] || continue
+  base=$(basename "$f" .md)
+  if [[ "$base" == _main ]]; then
+    continue
+  fi
+  if [[ "$base" == *.instructions ]]; then
+    continue
+  fi
+  {
+    echo ""
+    echo "---"
+    echo ""
+    strip_frontmatter "$f"
+  } >> "$MAIN_DST"
+  echo "  appended to copilot-instructions.md: $base.md"
+done
 
 for f in "$RULES_SRC"/*.instructions.md; do
   [[ -e "$f" ]] || continue
