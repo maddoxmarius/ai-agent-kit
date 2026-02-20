@@ -1,97 +1,60 @@
 # AI Agent Kit
 
-A reusable git submodule containing AI agent rules, instructions, and skills compatible with both **Cursor** and **GitHub Copilot**. This kit provides coding standards, best practices, and workflows that can be shared across multiple projects.
+A reusable git submodule containing AI agent rules and skills. One IDE-agnostic **rules** folder holds all content; install scripts deploy to **Cursor** and **VSCode (GitHub Copilot)**.
 
 ## Rule Sets
 
-This kit includes two separate rule sets:
+- **Private**: Universal rules for personal/open-source projects
+- **Dedalus**: CFW (U Client Framework) design system rules for Dedalus work
 
-- **Private Rules**: Universal rules for personal/open-source projects
-- **Dedalus Rules**: CFW (U Client Framework) design system rules for Dedalus work
+See [CONTEXTS.md](CONTEXTS.md) for when to use which set.
 
-Projects can selectively enable the appropriate rule set. See [CONTEXTS.md](CONTEXTS.md) for guidance on choosing the right rule set.
+## Layout
 
-## What's Included
-
-### Cursor Configuration
-- **Rules** (`.cursor/rules/private/` or `.cursor/rules/dedalus/`): Context-specific coding standards
-- **Skills** (`.cursor/skills/`): Shared workflows (code review, commit messages, error handling, testing)
-
-### GitHub Copilot Configuration
-- **Repository-wide instructions**: Universal or context-specific instructions
-- **Path-specific instructions** (`.github/instructions/private/` or `.github/instructions/dedalus/`): Language and domain-specific guidelines
-- **Agent instructions** (`AGENTS.md`): Agent-specific configuration
+- **rules/** – Single source of truth (no IDE-specific paths)
+  - **rules/private/** – Private rule set
+  - **rules/dedalus/** – Dedalus rule set
+- **skills/** – Cursor skills (code review, commit messages, error handling, testing)
+- **scripts/** – Install scripts for each IDE
 
 ## Quick Start
 
-### For Private Projects
+From your project root (with the kit added as submodule at `.ai-agent-kit`):
 
 ```bash
-# Add this repository as a submodule
+# Add the submodule
 git submodule add git@github.com:maddoxmarius/ai-agent-kit.git .ai-agent-kit
 
-# Symlink private rules for Cursor
-ln -s .ai-agent-kit/.cursor/rules/private .cursor/rules
+# Cursor: install rules + skills (private or dedalus)
+.ai-agent-kit/scripts/install-cursor.sh private
 
-# Create .cursorignore to prevent loading Dedalus rules
-cp .ai-agent-kit/.cursorignore.template-private .cursorignore
-
-# Symlink private instructions for Copilot
-ln -s .ai-agent-kit/.github/instructions/private .github/instructions
+# VSCode / GitHub Copilot: install instructions
+.ai-agent-kit/scripts/install-copilot.sh private
 ```
 
-### For Dedalus Projects
+For Dedalus projects use `dedalus` instead of `private`:
 
 ```bash
-# Add this repository as a submodule
-git submodule add git@github.com:maddoxmarius/ai-agent-kit.git .ai-agent-kit
-
-# Symlink dedalus rules for Cursor
-ln -s .ai-agent-kit/.cursor/rules/dedalus .cursor/rules
-
-# Create .cursorignore to prevent loading Private rules
-cp .ai-agent-kit/.cursorignore.template-dedalus .cursorignore
-
-# Symlink dedalus instructions for Copilot
-ln -s .ai-agent-kit/.github/instructions/dedalus .github/instructions
-
-# Copy dedalus-specific copilot instructions
-cp .ai-agent-kit/.github/copilot-instructions-dedalus.md .github/copilot-instructions.md
+.ai-agent-kit/scripts/install-cursor.sh dedalus
+.ai-agent-kit/scripts/install-copilot.sh dedalus
 ```
 
-### Verification
+## What Gets Installed
 
-**Cursor:**
-- Check that `.cursor/rules/` and `.cursor/skills/` are accessible
-- Rules should appear in Cursor's rule picker
-- Skills should be available to the AI agent
+**Cursor** (install-cursor.sh): copies rules to `.cursor/rules/*.mdc` and skills to `.cursor/skills/`
 
-**GitHub Copilot:**
-- Verify `.github/copilot-instructions.md` exists
-- Check that path-specific instructions in `.github/instructions/` are recognized
-- Copilot should apply instructions automatically
+**VSCode / Copilot** (install-copilot.sh): copies `_main.md` to `.github/copilot-instructions.md` and `*.instructions.md` to `.github/instructions/`
 
-## Preventing Rule Conflicts
+## Verification
 
-If Cursor is loading rules from both `private/` and `dedalus/` directories, create a `.cursorignore` file in your project root:
-
-**For Private Projects:**
-```bash
-cp .ai-agent-kit/.cursorignore.template-private .cursorignore
-```
-
-**For Dedalus Projects:**
-```bash
-cp .ai-agent-kit/.cursorignore.template-dedalus .cursorignore
-```
-
-This prevents Cursor from scanning the unwanted rule set in the submodule. See [SETUP.md](SETUP.md) for more details and alternative solutions.
+- **Cursor**: `ls .cursor/rules/ .cursor/skills/`
+- **Copilot**: `ls .github/copilot-instructions.md .github/instructions/`
 
 ## Detailed Setup
 
-See [SETUP.md](SETUP.md) for comprehensive integration instructions, troubleshooting, and advanced configuration options.
+See [SETUP.md](SETUP.md) for step-by-step instructions and troubleshooting.
 
-See [CONTEXTS.md](CONTEXTS.md) for guidance on choosing between private and Dedalus rule sets.
+See [CONTEXTS.md](CONTEXTS.md) for choosing between private and Dedalus rule sets.
 
 ## Contents Overview
 
@@ -117,21 +80,11 @@ See [CONTEXTS.md](CONTEXTS.md) for guidance on choosing between private and Deda
 - **Error Handling**: Exception handling patterns, error logging, user-facing messages
 - **Testing**: Test structure, coverage guidelines, test naming conventions
 
-## Compatibility
-
-This kit is designed to work with:
-- **Cursor**: Uses `.cursor/rules/` (`.mdc` format) and `.cursor/skills/` (`SKILL.md` format)
-- **GitHub Copilot**: Uses `.github/copilot-instructions.md` and `.github/instructions/*.instructions.md`
-
-Both configurations share similar content but use different formats optimized for each tool.
-
 ## Contributing
 
-When adding new rules or skills:
-- Keep content concise and universal (applicable to most projects)
-- Provide concrete examples
-- Use clear, actionable language
-- Avoid project-specific details
+- Keep rules in **rules/** (one source, no IDE-specific copies)
+- Add or edit under **rules/private/** or **rules/dedalus/** as appropriate
+- Scripts deploy to each IDE; no need to touch `.cursor` or `.github` in this repo
 
 ## License
 

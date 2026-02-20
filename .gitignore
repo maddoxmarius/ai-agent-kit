@@ -20,7 +20,8 @@ build/
 *.pem
 *.cert
 
-# IDE files
+# IDE files (kit uses rules/ and scripts; .cursor here is legacy)
+.cursor/
 .vscode/
 .idea/
 *.swp
