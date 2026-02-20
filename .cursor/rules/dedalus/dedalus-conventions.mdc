@@ -1,0 +1,264 @@
+---
+description: Dedalus-specific coding conventions including project structure, Angular patterns, testing requirements, and documentation standards
+alwaysApply: false
+globs: "**/*.ts,**/*.tsx,**/*.scss"
+---
+
+# Dedalus Coding Conventions
+
+## Project Structure
+
+### Angular Project Layout
+
+```
+src/
+├── app/
+│   ├── components/     # Reusable components
+│   ├── pages/         # Page components
+│   ├── shared/        # Shared modules and utilities
+│   ├── services/       # Business logic services
+│   ├── models/         # Data models and interfaces
+│   └── app.module.ts
+├── assets/
+│   └── themes/         # Theme CSS files
+└── styles.scss         # Global styles
+```
+
+### Module Organization
+
+- Group related functionality in feature modules
+- Use lazy loading for feature modules
+- Keep shared modules minimal
+- Separate business logic from presentation
+
+## Angular Patterns
+
+### Component Structure
+
+```typescript
+@Component({
+ selector: 'app-user-list',
+ templateUrl: './user-list.component.html',
+ styleUrls: ['./user-list.component.scss']
+})
+export class UserListComponent implements OnInit {
+ // Properties
+ users: User[] = [];
+ loading = false;
+ 
+ // Constructor with dependency injection
+ constructor(
+   private userService: UserService,
+   private modalService: ModalService
+ ) {}
+ 
+ // Lifecycle hooks
+ ngOnInit(): void {
+   this.loadUsers();
+ }
+ 
+ // Public methods
+ loadUsers(): void {
+   this.loading = true;
+   this.userService.getUsers()
+     .subscribe({
+       next: (users) => {
+         this.users = users;
+         this.loading = false;
+       },
+       error: (error) => {
+         this.handleError(error);
+         this.loading = false;
+       }
+     });
+ }
+ 
+ // Private methods
+ private handleError(error: Error): void {
+   // Error handling
+ }
+}
+```
+
+### Service Patterns
+
+```typescript
+@Injectable({
+ providedIn: 'root'
+})
+export class UserService {
+ constructor(private http: HttpClient) {}
+ 
+ getUsers(): Observable<User[]> {
+   return this.http.get<User[]>('/api/users');
+ }
+ 
+ createUser(user: User): Observable<User> {
+   return this.http.post<User>('/api/users', user);
+ }
+}
+```
+
+### Dependency Injection
+
+- Use constructor injection
+- Prefer `providedIn: 'root'` for services
+- Use interfaces for abstraction
+- Keep dependencies minimal
+
+## Testing Requirements
+
+### Unit Tests
+
+```typescript
+describe('UserListComponent', () => {
+ let component: UserListComponent;
+ let fixture: ComponentFixture<UserListComponent>;
+ let userService: jasmine.SpyObj<UserService>;
+ 
+ beforeEach(async () => {
+   const userServiceSpy = jasmine.createSpyObj('UserService', ['getUsers']);
+   
+   await TestBed.configureTestingModule({
+     declarations: [UserListComponent],
+     providers: [
+       { provide: UserService, useValue: userServiceSpy }
+     ]
+   }).compileComponents();
+   
+   fixture = TestBed.createComponent(UserListComponent);
+   component = fixture.componentInstance;
+   userService = TestBed.inject(UserService) as jasmine.SpyObj<UserService>;
+ });
+ 
+ it('should load users on init', () => {
+   const users = [{ id: '1', name: 'Test User' }];
+   userService.getUsers.and.returnValue(of(users));
+   
+   component.ngOnInit();
+   
+   expect(userService.getUsers).toHaveBeenCalled();
+   expect(component.users).toEqual(users);
+ });
+});
+```
+
+### Test Coverage
+
+- Aim for 80%+ coverage on business logic
+- Test critical user flows
+- Test error handling
+- Test edge cases
+- Use mocks for external dependencies
+
+## Documentation Standards
+
+### Code Comments
+
+- Document complex business logic
+- Explain "why" not "what"
+- Use JSDoc for public APIs
+- Keep comments up-to-date
+
+### Component Documentation
+
+```typescript
+/**
+ * User list component displays a grid of users with filtering and actions.
+ * 
+ * Features:
+ * - Pagination
+ * - Search/filter
+ * - User actions (edit, delete)
+ * 
+ * @component
+ */
+@Component({
+ selector: 'app-user-list',
+ templateUrl: './user-list.component.html'
+})
+export class UserListComponent {}
+```
+
+## CFW Integration
+
+### Module Imports
+
+```typescript
+import { ButtonModule } from '@ucfw/components/button';
+import { GridModule } from '@ucfw/components/grid';
+import { AlertModule } from '@ucfw/components/alert';
+import { UThemeModule } from '@ucfw/styles';
+
+@NgModule({
+ imports: [
+   CommonModule,
+   ButtonModule,
+   GridModule,
+   AlertModule,
+   UThemeModule.forRoot({
+     styleSheetContentRoot: 'assets/themes/'
+   })
+ ],
+ declarations: [UserListComponent]
+})
+export class UserModule {}
+```
+
+## Best Practices
+
+- Follow Angular style guide
+- Use OnPush change detection when possible
+- Implement proper error handling
+- Use RxJS operators effectively
+- Keep components focused and small
+- Separate concerns (presentation vs business logic)
+- Use TypeScript strict mode
+- Follow CFW design system guidelines
+- Write comprehensive tests
+- Document complex logic
+
+## Common Patterns
+
+### Error Handling
+
+```typescript
+this.userService.getUsers()
+ .pipe(
+   catchError(error => {
+     this.logger.error('Failed to load users', error);
+     this.showError('Unable to load users. Please try again.');
+     return of([]);
+   })
+ )
+ .subscribe(users => this.users = users);
+```
+
+### Loading States
+
+```typescript
+loading = false;
+
+loadData(): void {
+ this.loading = true;
+ this.dataService.getData()
+   .pipe(finalize(() => this.loading = false))
+   .subscribe(data => this.data = data);
+}
+```
+
+### Form Handling
+
+```typescript
+form = this.fb.group({
+ email: ['', [Validators.required, Validators.email]],
+ name: ['', Validators.required]
+});
+
+onSubmit(): void {
+ if (this.form.valid) {
+   this.userService.createUser(this.form.value)
+     .subscribe(user => this.handleSuccess(user));
+ }
+}
+```

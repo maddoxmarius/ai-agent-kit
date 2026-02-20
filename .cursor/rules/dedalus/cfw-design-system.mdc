@@ -1,0 +1,191 @@
+---
+description: U Client Framework (CFW) design system guidelines including component naming, color system, typography, layout patterns, theming, and accessibility requirements
+alwaysApply: false
+globs: "**/*.ts,**/*.tsx,**/*.scss,**/*.css,**/*.html"
+---
+
+# CFW Design System Guidelines
+
+## Component Naming
+
+All CFW components use the `u-` prefix:
+
+```html
+<!-- ✅ GOOD -->
+<u-button [uType]="'primary'">Click me</u-button>
+<u-input [(ngModel)]="value"></u-input>
+<u-alert [uType]="'success'">Operation successful</u-alert>
+<u-icon [uName]="'check'"></u-icon>
+<u-grid [uDataSource]="dataSource"></u-grid>
+
+<!-- ❌ BAD -->
+<button class="primary">Click me</button>
+<input [(ngModel)]="value">
+<div class="alert-success">Operation successful</div>
+```
+
+### Component Inputs
+
+All component inputs use the `u` prefix:
+
+```html
+<u-button [uType]="'primary'" [uSize]="'large'" [uDisabled]="false">
+<u-alert [uType]="'danger'" [uDismissible]="true">
+<u-grid [uDataSource]="data" [uSelectionScope]="'single'">
+```
+
+## Color System
+
+### Use CSS Variables, Never Hardcoded Colors
+
+```scss
+// ✅ GOOD - Use CSS variables
+.my-component {
+  background-color: var(--u-content-item-major-bg);
+  color: var(--u-content-item-major-fg);
+  border-color: var(--u-content-item-major-border);
+}
+
+// ❌ BAD - Hardcoded colors
+.my-component {
+  background-color: #ffffff;
+  color: #333333;
+  border-color: #cccccc;
+}
+```
+
+### Color Roles
+
+Use semantic color roles:
+- `--u-action-*` - Primary/action colors
+- `--u-feedback-success-*` - Success states
+- `--u-feedback-warning-*` - Warning states
+- `--u-feedback-danger-*` - Error/danger states
+- `--u-feedback-info-*` - Informational content
+- `--u-content-*` - Backgrounds, borders, neutral elements
+
+### Severity Colors
+
+For graduated severity indication (0-10 scale):
+```scss
+var(--u-app-severity-0) /* through */ var(--u-app-severity-10)
+```
+
+## Typography System
+
+### Font Stack
+
+Use system fonts:
+```scss
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+ 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+ 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 
+ 'Noto Color Emoji';
+```
+
+### Type Scale
+
+Base font size: **14px** (1rem = 14px)
+
+| Style | Size | Weight | CSS Variable |
+|-------|------|--------|--------------|
+| H1 | 2rem (28px) | 500 | `--u-font-size-xxxl` |
+| H2 | 1.75rem (24.5px) | 500 | `--u-font-size-xxl` |
+| H3 | 1.5rem (21px) | 500 | `--u-font-size-xl` |
+| H4 | 1.25rem (17.5px) | 500 | `--u-font-size-lg` |
+| H5 | 1.125rem (15.75px) | 500 | `--u-font-size-md` |
+| H6 | 1rem (14px) | 500 | `--u-font-size-base` |
+| Body | 1rem (14px) | 400 | `--u-font-size-base` |
+| Small | 0.875rem (12.25px) | 400 | `--u-font-size-sm` |
+
+## Layout Patterns
+
+### View Structure
+
+Standard view layout:
+1. **Header/Headline** - Application or screen name
+2. **Toolbar** (optional) - Filters and actions
+3. **Content** - Main content area (list, grid, form, etc.)
+
+```html
+<u-header-toolbar [uTitle]="'Page Title'">
+ <!-- Toolbar actions -->
+</u-header-toolbar>
+<u-filter>
+ <!-- Filter controls -->
+</u-filter>
+<u-grid [uDataSource]="data">
+ <!-- Grid content -->
+</u-grid>
+```
+
+### Master/Detail Pattern
+
+Use for navigating elements with drill-down data:
+- **Stacked style**: For limited screen space (mobile)
+- **Side-by-side style**: For wider screens (desktop)
+
+## Theming
+
+### Available Themes
+
+| Theme | Internal Name | Purpose |
+|-------|---------------|---------|
+| Light (default) | `u-light` | Standard light theme |
+| Dark | `u-dark` | Low-light environments |
+| Radiology | `u-radiology` | Radiology applications |
+| ICAS Blue | `u-icas-blue` | ICAS branding |
+| ICAS Green | `u-icas-green` | ICAS branding |
+| Light A11Y | `u-light-a11y` | Enhanced accessibility |
+
+### Theme Implementation
+
+```typescript
+import { UThemeModule } from '@ucfw/styles';
+
+@NgModule({
+ imports: [
+ UThemeModule.forRoot({
+ styleSheetContentRoot: 'assets/themes/'
+ })
+ ]
+})
+export class AppModule {}
+```
+
+## Accessibility (A11Y)
+
+### Compliance Requirements
+
+- **WCAG 2.0 Level A** - Minimum requirement
+- **WCAG 2.2 Level AA** - Target compliance
+- **EN 301 549** - European accessibility standard
+
+### Core Requirements
+
+1. **Screen Reader Support** - All visual information must have audio equivalents
+2. **Keyboard Navigation** - Complete accessibility via keyboard
+3. **Color Contrast** - Minimum 4.5:1 ratio for text and icons
+4. **Font Size** - Must be globally adjustable by users
+
+### Accessible Labels
+
+Always provide accessible labels:
+
+```html
+<u-button [uAriaLabel]="'Close dialog'">
+ <u-icon [uName]="'close'"></u-icon>
+</u-button>
+
+<u-input [uAriaLabel]="'Search patients'" [(ngModel)]="search"></u-input>
+```
+
+## Best Practices
+
+- Never use hardcoded hex colors
+- Always use CSS variables from the design system
+- Ensure sufficient color contrast (minimum 4.5:1)
+- Use semantic color roles, not arbitrary colors
+- Test with keyboard navigation
+- Verify screen reader compatibility
+- Use proper ARIA labels

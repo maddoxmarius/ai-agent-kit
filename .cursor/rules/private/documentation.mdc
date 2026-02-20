@@ -1,0 +1,239 @@
+---
+description: Documentation standards including code comments, README structure, API documentation, and documentation best practices
+alwaysApply: true
+---
+
+# Documentation Standards
+
+## Code Comments
+
+### When to Comment
+
+- **Explain "why", not "what"**: Code should be self-explanatory
+- **Document complex algorithms**: Explain non-obvious logic
+- **Clarify business rules**: Document domain-specific decisions
+- **Note workarounds**: Explain temporary fixes or known issues
+- **API documentation**: Document public interfaces
+
+### Comment Guidelines
+
+```typescript
+// ❌ BAD - Comments the obvious
+// Increment counter by 1
+counter++;
+
+// ✅ GOOD - Explains why
+// Use bitwise OR for faster flag combination
+// See: https://example.com/performance-analysis
+flags |= FLAG_ENABLED;
+
+// ❌ BAD - Outdated comment
+// TODO: Fix this bug (fixed in commit abc123)
+
+// ✅ GOOD - Explains business logic
+// Round down to nearest cent to match accounting system requirements
+const amount = Math.floor(price * 100) / 100;
+```
+
+### Comment Types
+
+- **Inline comments**: Brief explanations on the same line
+- **Block comments**: Multi-line explanations for complex logic
+- **Function documentation**: JSDoc/TSDoc for public APIs
+- **File headers**: Copyright, license, purpose (when needed)
+
+### Function Documentation
+
+```typescript
+// ✅ GOOD - JSDoc/TSDoc format
+/**
+ * Calculates the total price including tax.
+ * 
+ * @param basePrice - The base price before tax
+ * @param taxRate - The tax rate as a decimal (e.g., 0.08 for 8%)
+ * @returns The total price including tax, rounded to 2 decimal places
+ * @throws {ValidationError} If basePrice is negative or taxRate is invalid
+ * 
+ * @example
+ * ```typescript
+ * const total = calculateTotalWithTax(100, 0.08);
+ * // Returns: 108.00
+ * ```
+ */
+function calculateTotalWithTax(basePrice: number, taxRate: number): number {
+  if (basePrice < 0) {
+    throw new ValidationError('Base price cannot be negative');
+  }
+  if (taxRate < 0 || taxRate > 1) {
+    throw new ValidationError('Tax rate must be between 0 and 1');
+  }
+  return Math.round((basePrice * (1 + taxRate)) * 100) / 100;
+}
+```
+
+## README Structure
+
+### Essential Sections
+
+```markdown
+# Project Name
+
+Brief one-line description of what the project does.
+
+## Features
+
+- Key feature 1
+- Key feature 2
+- Key feature 3
+
+## Installation
+
+Step-by-step installation instructions.
+
+## Usage
+
+Basic usage examples.
+
+## Configuration
+
+Configuration options and environment variables.
+
+## Development
+
+How to set up development environment.
+
+## Testing
+
+How to run tests.
+
+## Contributing
+
+Guidelines for contributors.
+
+## License
+
+License information.
+```
+
+### README Best Practices
+
+- **Start with purpose**: What does this project do?
+- **Include examples**: Show how to use the project
+- **Keep it updated**: Update README when code changes
+- **Use clear structure**: Organize with headers and lists
+- **Add badges**: Build status, version, license
+- **Include screenshots**: For UI projects
+- **Link to docs**: For detailed documentation
+
+## API Documentation
+
+### REST API Documentation
+
+```markdown
+## API Endpoints
+
+### POST /api/users
+
+Create a new user.
+
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "name": "John Doe",
+  "password": "securepassword"
+}
+```
+
+**Response (201 Created):**
+```json
+{
+  "id": "123",
+  "email": "user@example.com",
+  "name": "John Doe",
+  "createdAt": "2024-01-01T00:00:00Z"
+}
+```
+
+**Errors:**
+- `400 Bad Request`: Invalid input data
+- `409 Conflict`: Email already exists
+```
+
+### API Documentation Standards
+
+- **Document all endpoints**: Include request/response formats
+- **Show examples**: Provide curl or code examples
+- **Document errors**: List possible error responses
+- **Include authentication**: Explain auth requirements
+- **Version APIs**: Use versioning for breaking changes
+
+## Code Documentation Tools
+
+### TypeScript/JavaScript
+
+- **JSDoc/TSDoc**: Standard documentation format
+- **TypeDoc**: Generate HTML documentation from comments
+- **ESDoc**: Alternative documentation generator
+
+### Python
+
+- **Docstrings**: Use PEP 257 style
+- **Sphinx**: Generate documentation from docstrings
+- **pydoc**: Built-in documentation generator
+
+### General
+
+- **Markdown**: For README and guides
+- **OpenAPI/Swagger**: For API documentation
+- **Architecture Decision Records (ADRs)**: Document decisions
+
+## Documentation Maintenance
+
+### Keep Documentation Updated
+
+- **Update with code changes**: Don't let docs get stale
+- **Review during code review**: Check if docs need updates
+- **Remove outdated docs**: Delete or archive old documentation
+- **Version documentation**: Keep docs aligned with code versions
+
+### Documentation Review Checklist
+
+- [ ] README is up-to-date
+- [ ] API documentation matches implementation
+- [ ] Code comments explain complex logic
+- [ ] Examples work and are current
+- [ ] Installation instructions are accurate
+- [ ] Configuration options are documented
+- [ ] Breaking changes are noted
+
+## Writing Good Documentation
+
+### Clarity
+
+- **Use simple language**: Avoid jargon when possible
+- **Be concise**: Get to the point quickly
+- **Use examples**: Show, don't just tell
+- **Organize logically**: Group related information
+
+### Completeness
+
+- **Cover all use cases**: Document common scenarios
+- **Include edge cases**: Note limitations and gotchas
+- **Provide context**: Explain when and why to use features
+- **Link related docs**: Connect related information
+
+### Accuracy
+
+- **Test examples**: Ensure code examples work
+- **Verify facts**: Check that information is correct
+- **Update regularly**: Keep documentation current
+- **Review carefully**: Proofread before publishing
+
+## Documentation Anti-Patterns
+
+- **Don't comment obvious code**: `// Set x to 5` is useless
+- **Don't duplicate code in comments**: Comments should add value
+- **Don't leave TODOs**: Either do it or create an issue
+- **Don't write novels**: Keep comments concise
+- **Don't forget to update**: Outdated docs are worse than no docs
