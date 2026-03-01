@@ -30,7 +30,7 @@ Using Dedalus CFW?  YES → dedalus
 
 ### rules/private/
 
-- **Rules (Cursor)**: code-quality.md, git-conventions.md, security.md, documentation.md
+- **Rules (Cursor)**: code-quality.md, git-conventions.md, security.md, documentation.md, logging.md
 - **Copilot main**: _main.md → copilot-instructions.md
 - **Copilot path-specific**: typescript.instructions.md, python.instructions.md, security.instructions.md
 
@@ -42,7 +42,7 @@ Using Dedalus CFW?  YES → dedalus
 
 ### skills/ (shared)
 
-- Code review, commit messages, error handling, testing (installed for Cursor only)
+- Code review, commit messages, error handling, jira-issue-details, testing (installed for Cursor only)
 
 ## Examples
 

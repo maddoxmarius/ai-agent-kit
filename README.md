@@ -14,7 +14,7 @@ See [CONTEXTS.md](CONTEXTS.md) for when to use which set.
 - **rules/** – Single source of truth (no IDE-specific paths)
   - **rules/private/** – Private rule set
   - **rules/dedalus/** – Dedalus rule set
-- **skills/** – Cursor skills (code review, commit messages, error handling, testing)
+- **skills/** – Cursor skills (code review, commit messages, error handling, Jira issue details, testing)
 - **scripts/** – Install scripts for each IDE
 
 ## Quick Start
@@ -64,6 +64,7 @@ See [CONTEXTS.md](CONTEXTS.md) for choosing between private and Dedalus rule set
 - **Git Conventions**: Commit message format, branch naming, PR conventions
 - **Security**: Input validation, secret management, dependency security
 - **Documentation**: Code comments, README structure, API documentation
+- **Logging**: Emoji usage in log messages for scanability and intent
 - **Language-specific**: TypeScript, Python, and security guidelines
 
 ### Dedalus Rules & Instructions
@@ -78,6 +79,7 @@ See [CONTEXTS.md](CONTEXTS.md) for choosing between private and Dedalus rule set
 - **Code Review**: Review checklist, quality standards, feedback format
 - **Commit Messages**: Conventional commits format, message structure, examples
 - **Error Handling**: Exception handling patterns, error logging, user-facing messages
+- **Jira Issue Details**: Fetch and summarize Jira tickets by key or URL (requires Jira/Atlassian MCP in the project)
 - **Testing**: Test structure, coverage guidelines, test naming conventions
 
 ## Contributing

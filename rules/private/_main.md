@@ -22,6 +22,11 @@ Always handle errors explicitly. Never use empty catch blocks or ignore errors.
 - Avoid deep nesting - prefer early returns and guard clauses
 - Extract complex logic into separate functions
 
+### Logging
+
+- Use emojis in log messages to improve scanability (e.g. 🔴 errors, ⚠️ warnings, ✅ info/success, 🔍 debug).
+- Put the emoji at the start of the message string and use one emoji per log line consistently across the codebase.
+
 ### Naming Conventions
 
 - Use descriptive names that explain intent

@@ -62,6 +62,10 @@ This file provides agent-specific instructions for AI coding assistants. These i
 - Review changes before committing
 - Keep main/master branch stable
 
+## Skills
+
+When the user references a Jira issue by key (e.g. PROJ-123) or URL, use the **jira-issue-details** skill to fetch and summarize the ticket. Use it to gather context before coding or reviewing changes tied to a Jira ticket. The skill requires a Jira/Atlassian MCP server to be installed and authenticated in the environment.
+
 ## Language-Specific Guidelines
 
 ### TypeScript/JavaScript
