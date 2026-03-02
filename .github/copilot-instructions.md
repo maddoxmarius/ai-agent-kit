@@ -1,794 +1,1016 @@
-# GitHub Copilot Instructions
+# GitHub Copilot Instructions - Dedalus CFW
 
-These instructions apply to all code in this repository. Follow these guidelines when writing code, reviewing changes, or suggesting improvements.
+These instructions apply to all Dedalus projects using the U Client Framework (CFW) design system.
 
-## Code Quality Standards
+## CFW Design System
 
-### Error Handling
+### Component Naming
+- All components use `u-` prefix: `<u-button>`, `<u-input>`, `<u-alert>`, `<u-grid>`
+- Component inputs use `u` prefix: `[uType]`, `[uSize]`, `[uDisabled]`
 
-Always handle errors explicitly. Never use empty catch blocks or ignore errors.
+### Color System
+- Always use CSS variables: `var(--u-content-item-major-bg)`, `var(--u-action-*)`
+- Never use hardcoded hex colors
+- Use semantic color roles: `--u-action-*`, `--u-feedback-*`, `--u-content-*`
 
-- Use try-catch blocks for error handling
-- Provide meaningful error messages with context
-- Log errors appropriately with relevant information
-- Use specific error types for different failure modes
-- Fail fast when encountering invalid states
+### Typography
+- Base font size: 14px (1rem = 14px)
+- Use CSS variables: `--u-font-size-xxxl` through `--u-font-size-sm`
+- Font weights: 400 (regular) or 500 (medium)
 
-### Code Organization
+### Layout Patterns
+- Standard view: Header → Toolbar → Content
+- Use `<u-header-toolbar>`, `<u-filter>`, `<u-grid>` components
+- Support master/detail patterns
 
-- Keep functions small and focused (under 50 lines when possible)
-- Each function should have a single responsibility
-- Use clear, descriptive names for variables, functions, and classes
-- Avoid deep nesting - prefer early returns and guard clauses
-- Extract complex logic into separate functions
+## Component Usage
 
-### Logging
-
-- Use emojis in log messages to improve scanability (e.g. 🔴 errors, ⚠️ warnings, ✅ info/success, 🔍 debug).
-- Put the emoji at the start of the message string and use one emoji per log line consistently across the codebase.
-
-### Naming Conventions
-
-- Use descriptive names that explain intent
-- Prefer full words over abbreviations
-- Use verbs for functions, nouns for variables
-- Use PascalCase for classes and types
-- Be consistent with naming patterns throughout the codebase
-
-## Security Best Practices
-
-### Secret Management
-
-- Never hardcode secrets, API keys, or credentials
-- Use environment variables for configuration
-- Store secrets in secure secret management services
-- Never commit secrets to version control
-- Use different secrets for each environment
-
-### Input Validation
-
-- Validate and sanitize all user inputs
-- Use parameterized queries for database operations
-- Escape output to prevent XSS attacks
-- Validate data types, formats, and ranges
-- Implement rate limiting to prevent abuse
-
-### Authentication & Authorization
-
-- Hash passwords using strong algorithms (bcrypt, argon2)
-- Implement proper authentication checks
-- Verify authorization before sensitive operations
-- Use secure session management
-- Implement 2FA for sensitive operations
-
-## Git Conventions
-
-### Commit Messages
-
-Use Conventional Commits format:
-
-```
-<type>(<scope>): <subject>
-
-<body>
-
-<footer>
+### Import Patterns
+Import components individually for tree-shaking:
+```typescript
+import { ButtonModule } from '@ucfw/components/button';
+import { GridModule } from '@ucfw/components/grid';
 ```
 
-Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf`, `ci`, `build`
+### Common Components
+- Buttons: `<u-button [uType]="'primary'">`
+- Inputs: `<u-input [(ngModel)]="value">`
+- Grids: `<u-grid [uDataSource]="data">`
+- Alerts: `<u-alert [uType]="'success'">`
 
-Examples:
-- `feat(auth): add JWT token validation`
-- `fix(api): resolve null pointer in user endpoint`
-- `docs(readme): update installation instructions`
+## Styling Guidelines
 
-### Branch Naming
+- Use CSS variables, never hardcoded values
+- Prefer utility classes when possible
+- Use semantic color roles
+- Ensure 4.5:1 color contrast minimum
+- Test across themes
 
-Use descriptive branch names with prefixes:
-- `feature/` - New features
-- `fix/` - Bug fixes
-- `hotfix/` - Urgent production fixes
-- `docs/` - Documentation updates
-- `refactor/` - Code refactoring
+## Accessibility
+
+- WCAG 2.2 Level AA compliance required
+- Provide `uAriaLabel` for all interactive elements
+- Support keyboard navigation
+- Test with screen readers
+
+## Angular Patterns
+
+- Use OnPush change detection when possible
+- Implement proper error handling with RxJS
+- Separate business logic from presentation
+- Use dependency injection properly
+- Write comprehensive unit tests (80%+ coverage)
+
+## Best Practices
+
+- Follow CFW design system guidelines
+- Use TypeScript strict mode
+- Write self-documenting code
+- Handle errors explicitly
+- Test critical user flows
+- Document complex business logic
+
+---
+
+
+# CFW Component Usage Patterns
+
+## Import Patterns
+
+Import components individually to enable tree-shaking:
+
+```typescript
+// ✅ GOOD - Individual imports
+import { ButtonModule } from '@ucfw/components/button';
+import { GridModule } from '@ucfw/components/grid';
+import { AlertModule } from '@ucfw/components/alert';
+
+// ❌ BAD - Barrel imports (if available, may include unused code)
+import { ButtonModule, GridModule, AlertModule } from '@ucfw/components';
+```
+
+## Component Modules
+
+### Actions & Navigation
+- `@ucfw/components/button` - Buttons (`<u-button>`)
+- `@ucfw/components/button-group` - Button groups
+- `@ucfw/components/breadcrumb` - Breadcrumb navigation
+- `@ucfw/components/navbar` - Navigation bar
+- `@ucfw/components/tabs` - Tab navigation
+
+### Forms & Inputs
+- `@ucfw/components/input` - Text input (`<u-input>`)
+- `@ucfw/components/textarea` - Text area
+- `@ucfw/components/select` - Dropdown select
+- `@ucfw/components/checkbox` - Checkboxes
+- `@ucfw/components/radio` - Radio buttons
+- `@ucfw/components/toggle-switch` - Toggle switches
+- `@ucfw/components/new-calendar` - Date/time picker
+
+### Data Display
+- `@ucfw/components/grid` - Data grid (`<u-grid>`)
+- `@ucfw/components/list` - List view (`<u-list>`)
+- `@ucfw/components/tree` - Tree view (`<u-tree>`)
+- `@ucfw/components/badge` - Badges
+- `@ucfw/components/avatar` - User avatars
+- `@ucfw/components/cards` - Card containers
+- `@ucfw/components/icons` - Icon component (`<u-icon>`)
+
+### Feedback & Overlays
+- `@ucfw/components/alert` - Alert messages (`<u-alert>`)
+- `@ucfw/components/modal` - Modal dialogs
+- `@ucfw/components/notification` - Toast notifications
+- `@ucfw/components/popover` - Popovers
+- `@ucfw/components/tooltip` - Tooltips
+
+## Button Usage
+
+```html
+<!-- Primary action -->
+<u-button [uType]="'primary'">Save</u-button>
+
+<!-- Secondary action -->
+<u-button [uType]="'secondary'">Cancel</u-button>
+
+<!-- Danger action -->
+<u-button [uType]="'danger'">Delete</u-button>
+
+<!-- Icon button -->
+<u-button [uType]="'icon'" [uAriaLabel]="'Edit'">
+ <u-icon [uName]="'edit'"></u-icon>
+</u-button>
+```
+
+## Form Inputs
+
+```html
+<!-- Text input -->
+<u-input 
+  [(ngModel)]="email" 
+  [uPlaceholder]="'Enter email'"
+  [uAriaLabel]="'Email address'">
+</u-input>
+
+<!-- Select dropdown -->
+<u-select 
+  [(ngModel)]="selectedValue"
+  [uDataSource]="options"
+  [uAriaLabel]="'Select option'">
+</u-select>
+
+<!-- Checkbox -->
+<u-checkbox 
+  [(ngModel)]="isChecked"
+  [uLabel]="'Accept terms'">
+</u-checkbox>
+```
+
+## Grid Usage
+
+```html
+<u-grid [uDataSource]="dataSource" [uSelectionScope]="'single'">
+ <u-grid-header *uGridHeaderDef [uTitle]="{ key: 'Title' }">
+ </u-grid-header>
+ 
+ <u-grid-column uName="name" uWidth="200px" [uPin]="'left'">
+ <ng-template uGridHeaderCellDef>Name</ng-template>
+ <ng-template uGridCellDef let-context>
+ {{ context.value.name }}
+ </ng-template>
+ </u-grid-column>
+</u-grid>
+```
+
+## Alert Usage
+
+```html
+<u-alert [uType]="'success'" [uDismissible]="true">
+ Operation completed successfully.
+</u-alert>
+
+<u-alert [uType]="'danger'">
+ An error occurred. Please try again.
+</u-alert>
+
+<u-alert [uType]="'warning'">
+ This action cannot be undone.
+</u-alert>
+
+<u-alert [uType]="'info'">
+ Please review the information below.
+</u-alert>
+```
+
+## Modal Usage
+
+```typescript
+import { ModalService } from '@ucfw/components/modal';
+
+constructor(private modalService: ModalService) {}
+
+openConfirmation() {
+ this.modalService.confirm({
+ title: 'Confirm Action',
+ message: 'Are you sure you want to proceed?',
+ confirmLabel: 'Yes',
+ cancelLabel: 'No'
+ });
+}
+```
+
+## Icon Usage
+
+```html
+<!-- Basic icon -->
+<u-icon [uName]="'check'"></u-icon>
+
+<!-- Icon with size -->
+<u-icon [uName]="'edit'" [uSize]="'large'"></u-icon>
+
+<!-- Icon in button -->
+<u-button [uType]="'icon'">
+ <u-icon [uName]="'close'"></u-icon>
+</u-button>
+```
+
+## Best Practices
+
+- Always import components individually for tree-shaking
+- Use `u-` prefix for all CFW components
+- Provide `uAriaLabel` for accessibility
+- Use semantic types (`primary`, `success`, `danger`, etc.)
+- Follow component API conventions
+- Use two-way binding `[(ngModel)]` for form inputs
+- Provide data sources for data-driven components
+
+## Common Patterns
+
+### Form Layout
+```html
+<form>
+ <u-input 
+   [(ngModel)]="formData.email"
+   [uLabel]="'Email'"
+   [uRequired]="true">
+ </u-input>
+ 
+ <u-button [uType]="'primary'" type="submit">
+ Save
+ </u-button>
+</form>
+```
+
+### Empty State
+```html
+<u-empty-state 
+ [uIconName]="'info_outline'" 
+ [uTitle]="'No data available'"
+ [uSize]="'medium'">
+</u-empty-state>
+```
+
+---
+
+
+# CFW Design System Guidelines
+
+## Component Naming
+
+All CFW components use the `u-` prefix:
+
+```html
+<!-- ✅ GOOD -->
+<u-button [uType]="'primary'">Click me</u-button>
+<u-input [(ngModel)]="value"></u-input>
+<u-alert [uType]="'success'">Operation successful</u-alert>
+<u-icon [uName]="'check'"></u-icon>
+<u-grid [uDataSource]="dataSource"></u-grid>
+
+<!-- ❌ BAD -->
+<button class="primary">Click me</button>
+<input [(ngModel)]="value">
+<div class="alert-success">Operation successful</div>
+```
+
+### Component Inputs
+
+All component inputs use the `u` prefix:
+
+```html
+<u-button [uType]="'primary'" [uSize]="'large'" [uDisabled]="false">
+<u-alert [uType]="'danger'" [uDismissible]="true">
+<u-grid [uDataSource]="data" [uSelectionScope]="'single'">
+```
+
+## Color System
+
+### Use CSS Variables, Never Hardcoded Colors
+
+```scss
+// ✅ GOOD - Use CSS variables
+.my-component {
+  background-color: var(--u-content-item-major-bg);
+  color: var(--u-content-item-major-fg);
+  border-color: var(--u-content-item-major-border);
+}
+
+// ❌ BAD - Hardcoded colors
+.my-component {
+  background-color: #ffffff;
+  color: #333333;
+  border-color: #cccccc;
+}
+```
+
+### Color Roles
+
+Use semantic color roles:
+- `--u-action-*` - Primary/action colors
+- `--u-feedback-success-*` - Success states
+- `--u-feedback-warning-*` - Warning states
+- `--u-feedback-danger-*` - Error/danger states
+- `--u-feedback-info-*` - Informational content
+- `--u-content-*` - Backgrounds, borders, neutral elements
+
+### Severity Colors
+
+For graduated severity indication (0-10 scale):
+```scss
+var(--u-app-severity-0) /* through */ var(--u-app-severity-10)
+```
+
+## Typography System
+
+### Font Stack
+
+Use system fonts:
+```scss
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+ 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+ 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 
+ 'Noto Color Emoji';
+```
+
+### Type Scale
+
+Base font size: **14px** (1rem = 14px)
+
+| Style | Size | Weight | CSS Variable |
+|-------|------|--------|--------------|
+| H1 | 2rem (28px) | 500 | `--u-font-size-xxxl` |
+| H2 | 1.75rem (24.5px) | 500 | `--u-font-size-xxl` |
+| H3 | 1.5rem (21px) | 500 | `--u-font-size-xl` |
+| H4 | 1.25rem (17.5px) | 500 | `--u-font-size-lg` |
+| H5 | 1.125rem (15.75px) | 500 | `--u-font-size-md` |
+| H6 | 1rem (14px) | 500 | `--u-font-size-base` |
+| Body | 1rem (14px) | 400 | `--u-font-size-base` |
+| Small | 0.875rem (12.25px) | 400 | `--u-font-size-sm` |
+
+## Layout Patterns
+
+### View Structure
+
+Standard view layout:
+1. **Header/Headline** - Application or screen name
+2. **Toolbar** (optional) - Filters and actions
+3. **Content** - Main content area (list, grid, form, etc.)
+
+```html
+<u-header-toolbar [uTitle]="'Page Title'">
+ <!-- Toolbar actions -->
+</u-header-toolbar>
+<u-filter>
+ <!-- Filter controls -->
+</u-filter>
+<u-grid [uDataSource]="data">
+ <!-- Grid content -->
+</u-grid>
+```
+
+### Master/Detail Pattern
+
+Use for navigating elements with drill-down data:
+- **Stacked style**: For limited screen space (mobile)
+- **Side-by-side style**: For wider screens (desktop)
+
+## Theming
+
+### Available Themes
+
+| Theme | Internal Name | Purpose |
+|-------|---------------|---------|
+| Light (default) | `u-light` | Standard light theme |
+| Dark | `u-dark` | Low-light environments |
+| Radiology | `u-radiology` | Radiology applications |
+| ICAS Blue | `u-icas-blue` | ICAS branding |
+| ICAS Green | `u-icas-green` | ICAS branding |
+| Light A11Y | `u-light-a11y` | Enhanced accessibility |
+
+### Theme Implementation
+
+```typescript
+import { UThemeModule } from '@ucfw/styles';
+
+@NgModule({
+ imports: [
+ UThemeModule.forRoot({
+ styleSheetContentRoot: 'assets/themes/'
+ })
+ ]
+})
+export class AppModule {}
+```
+
+## Accessibility (A11Y)
+
+### Compliance Requirements
+
+- **WCAG 2.0 Level A** - Minimum requirement
+- **WCAG 2.2 Level AA** - Target compliance
+- **EN 301 549** - European accessibility standard
+
+### Core Requirements
+
+1. **Screen Reader Support** - All visual information must have audio equivalents
+2. **Keyboard Navigation** - Complete accessibility via keyboard
+3. **Color Contrast** - Minimum 4.5:1 ratio for text and icons
+4. **Font Size** - Must be globally adjustable by users
+
+### Accessible Labels
+
+Always provide accessible labels:
+
+```html
+<u-button [uAriaLabel]="'Close dialog'">
+ <u-icon [uName]="'close'"></u-icon>
+</u-button>
+
+<u-input [uAriaLabel]="'Search patients'" [(ngModel)]="search"></u-input>
+```
+
+## Best Practices
+
+- Never use hardcoded hex colors
+- Always use CSS variables from the design system
+- Ensure sufficient color contrast (minimum 4.5:1)
+- Use semantic color roles, not arbitrary colors
+- Test with keyboard navigation
+- Verify screen reader compatibility
+- Use proper ARIA labels
+
+---
+
+
+# CFW Styling Guidelines
+
+## CSS Variables
+
+### Always Use CSS Variables
+
+```scss
+// ✅ GOOD - Use CSS variables
+.my-component {
+  background-color: var(--u-content-item-major-bg);
+  color: var(--u-content-item-major-fg);
+  border-color: var(--u-content-item-major-border);
+  padding: var(--u-spacing-md);
+}
+
+// ❌ BAD - Hardcoded values
+.my-component {
+  background-color: #ffffff;
+  color: #333333;
+  border-color: #cccccc;
+  padding: 16px;
+}
+```
+
+### Variable Naming Patterns
+
+- `--u-content-*` - Content colors (backgrounds, text, borders)
+- `--u-action-*` - Action/primary colors
+- `--u-feedback-*` - Feedback colors (success, warning, danger, info)
+- `--u-spacing-*` - Spacing values
+- `--u-font-*` - Typography variables
+- `--u-app-severity-*` - Severity scale colors
+
+## Utility Classes
+
+Use Bootstrap-based utility classes:
+
+### Display
+```html
+<div class="d-flex">Flex container</div>
+<div class="d-block">Block element</div>
+<div class="d-none">Hidden element</div>
+```
+
+### Flexbox
+```html
+<div class="d-flex flex-column">
+<div class="d-flex justify-content-between">
+<div class="d-flex align-items-center">
+```
+
+### Spacing
+```html
+<div class="m-3">Margin all sides</div>
+<div class="p-2">Padding all sides</div>
+<div class="mt-4">Margin top</div>
+<div class="pb-1">Padding bottom</div>
+```
+
+### Text
+```html
+<p class="text-primary">Primary text</p>
+<p class="text-center">Centered text</p>
+<p class="font-weight-bold">Bold text</p>
+```
+
+### Borders
+```html
+<div class="border">Border</div>
+<div class="border-top">Top border</div>
+<div class="rounded">Rounded corners</div>
+```
+
+## Custom Styles
+
+### When Writing Custom Styles
+
+```scss
+// ✅ GOOD - Use CSS variables
+.my-component {
+  background-color: var(--u-content-item-major-bg);
+  color: var(--u-content-item-major-fg);
+  border-color: var(--u-content-item-major-border);
+  
+  &:hover {
+    background-color: var(--u-content-item-major-bg-hover);
+  }
+  
+  &:active {
+    background-color: var(--u-content-item-major-bg-pressed);
+  }
+}
+
+// ❌ BAD - Hardcoded values
+.my-component {
+  background-color: #ffffff;
+  color: #333333;
+  border-color: #cccccc;
+  
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+```
+
+### SCSS Guidelines
+
+- Use CSS variables, not SCSS color manipulation functions
+- Don't use `darken()`, `lighten()`, `mix()` with hardcoded colors
+- Use CSS variables for all color values
+- Leverage utility classes when possible
+- Keep custom styles minimal
+
+## Theme Customization
+
+### Creating Custom Themes
+
+When creating custom themes:
+- Update only hue and saturation values (preferred)
+- Only update lightness if absolutely necessary
+- Round values up/down
+- Don't use transparency unless variable includes "-translucent"
+- Reuse existing colors when possible
+
+### Theme Variables
+
+```scss
+// Theme-specific overrides
+[data-theme="custom-theme"] {
+  --u-action-primary: hsl(210, 70%, 50%);
+  --u-action-primary-hover: hsl(210, 70%, 45%);
+  --u-action-primary-pressed: hsl(210, 70%, 40%);
+}
+```
+
+## Responsive Design
+
+### Breakpoints
+
+```scss
+--breakpoint-xs: 0;
+--breakpoint-sm: 576px;
+--breakpoint-md: 768px;
+--breakpoint-lg: 992px;
+--breakpoint-xl: 1200px;
+```
+
+### Responsive Patterns
+
+```scss
+// Mobile-first approach
+.component {
+  padding: var(--u-spacing-sm);
+  
+  @media (min-width: 768px) {
+    padding: var(--u-spacing-md);
+  }
+  
+  @media (min-width: 1200px) {
+    padding: var(--u-spacing-lg);
+  }
+}
+```
+
+## Best Practices
+
+- Always use CSS variables from the design system
+- Prefer utility classes over custom styles
+- Use semantic color roles
+- Ensure sufficient contrast (minimum 4.5:1)
+- Test styles across themes
+- Use responsive breakpoints appropriately
+- Keep custom styles minimal and focused
+
+## Anti-Patterns
+
+```scss
+// ❌ DON'T - Hardcoded colors
+.component {
+  color: #333;
+  background: white;
+}
+
+// ❌ DON'T - SCSS color manipulation
+.component {
+  background: darken(#fff, 10%);
+}
+
+// ❌ DON'T - Arbitrary values
+.component {
+  padding: 13px;
+  margin: 7px;
+}
+
+// ✅ DO - Use variables and utilities
+.component {
+  color: var(--u-content-item-major-fg);
+  background: var(--u-content-item-major-bg);
+  padding: var(--u-spacing-md);
+  margin: var(--u-spacing-sm);
+}
+```
+
+---
+
+
+# Dedalus Coding Conventions
+
+## Project Structure
+
+### Angular Project Layout
+
+```
+src/
+├── app/
+│   ├── components/     # Reusable components
+│   ├── pages/         # Page components
+│   ├── shared/        # Shared modules and utilities
+│   ├── services/       # Business logic services
+│   ├── models/         # Data models and interfaces
+│   └── app.module.ts
+├── assets/
+│   └── themes/         # Theme CSS files
+└── styles.scss         # Global styles
+```
+
+### Module Organization
+
+- Group related functionality in feature modules
+- Use lazy loading for feature modules
+- Keep shared modules minimal
+- Separate business logic from presentation
+
+## Angular Patterns
+
+### Component Structure
+
+```typescript
+@Component({
+ selector: 'app-user-list',
+ templateUrl: './user-list.component.html',
+ styleUrls: ['./user-list.component.scss']
+})
+export class UserListComponent implements OnInit {
+ // Properties
+ users: User[] = [];
+ loading = false;
+ 
+ // Constructor with dependency injection
+ constructor(
+   private userService: UserService,
+   private modalService: ModalService
+ ) {}
+ 
+ // Lifecycle hooks
+ ngOnInit(): void {
+   this.loadUsers();
+ }
+ 
+ // Public methods
+ loadUsers(): void {
+   this.loading = true;
+   this.userService.getUsers()
+     .subscribe({
+       next: (users) => {
+         this.users = users;
+         this.loading = false;
+       },
+       error: (error) => {
+         this.handleError(error);
+         this.loading = false;
+       }
+     });
+ }
+ 
+ // Private methods
+ private handleError(error: Error): void {
+   // Error handling
+ }
+}
+```
+
+### Service Patterns
+
+```typescript
+@Injectable({
+ providedIn: 'root'
+})
+export class UserService {
+ constructor(private http: HttpClient) {}
+ 
+ getUsers(): Observable<User[]> {
+   return this.http.get<User[]>('/api/users');
+ }
+ 
+ createUser(user: User): Observable<User> {
+   return this.http.post<User>('/api/users', user);
+ }
+}
+```
+
+### Dependency Injection
+
+- Use constructor injection
+- Prefer `providedIn: 'root'` for services
+- Use interfaces for abstraction
+- Keep dependencies minimal
+
+## Testing Requirements
+
+### Unit Tests
+
+```typescript
+describe('UserListComponent', () => {
+ let component: UserListComponent;
+ let fixture: ComponentFixture<UserListComponent>;
+ let userService: jasmine.SpyObj<UserService>;
+ 
+ beforeEach(async () => {
+   const userServiceSpy = jasmine.createSpyObj('UserService', ['getUsers']);
+   
+   await TestBed.configureTestingModule({
+     declarations: [UserListComponent],
+     providers: [
+       { provide: UserService, useValue: userServiceSpy }
+     ]
+   }).compileComponents();
+   
+   fixture = TestBed.createComponent(UserListComponent);
+   component = fixture.componentInstance;
+   userService = TestBed.inject(UserService) as jasmine.SpyObj<UserService>;
+ });
+ 
+ it('should load users on init', () => {
+   const users = [{ id: '1', name: 'Test User' }];
+   userService.getUsers.and.returnValue(of(users));
+   
+   component.ngOnInit();
+   
+   expect(userService.getUsers).toHaveBeenCalled();
+   expect(component.users).toEqual(users);
+ });
+});
+```
+
+### Test Coverage
+
+- Aim for 80%+ coverage on business logic
+- Test critical user flows
+- Test error handling
+- Test edge cases
+- Use mocks for external dependencies
 
 ## Documentation Standards
 
 ### Code Comments
 
-- Write self-documenting code with clear naming
-- Add comments only when necessary to explain "why", not "what"
-- Document complex algorithms and business logic
-- Use JSDoc/TSDoc for public APIs
-- Keep comments up-to-date with code changes
+- Document complex business logic
+- Explain "why" not "what"
+- Use JSDoc for public APIs
+- Keep comments up-to-date
 
-### README Files
-
-- Start with a clear description of what the project does
-- Include installation and usage instructions
-- Provide examples and code samples
-- Document configuration options
-- Keep documentation current
-
-## Testing Guidelines
-
-### Test Coverage
-
-- Write tests for critical functionality
-- Aim for reasonable test coverage (70-80% overall)
-- Test edge cases and error conditions
-- Use descriptive test names
-- Keep tests independent and isolated
-
-### Test Structure
-
-- Follow Arrange-Act-Assert pattern
-- One concept per test
-- Group related tests with describe blocks
-- Clean up after tests (use beforeEach/afterEach)
-
-## General Principles
-
-### Keep It Simple
-
-- Prefer simple solutions over clever ones
-- Write code that is easy to understand
-- Avoid premature optimization
-- Refactor regularly to improve code quality
-
-### Consistency
-
-- Follow project conventions and style guides
-- Use consistent patterns throughout the codebase
-- Maintain consistent error handling approaches
-- Keep naming conventions consistent
-
-### Best Practices
-
-- Review code before committing
-- Write self-documenting code
-- Handle errors explicitly
-- Keep dependencies updated
-- Document complex decisions
-
-## When Writing Code
-
-1. **Think about maintainability**: Will others understand this code?
-2. **Consider edge cases**: What could go wrong?
-3. **Handle errors gracefully**: Provide helpful error messages
-4. **Write tests**: Ensure code works as expected
-5. **Document complex logic**: Explain non-obvious decisions
-
-## Anti-Patterns to Avoid
-
-- Don't ignore errors or use empty catch blocks
-- Don't commit commented-out code
-- Don't use magic numbers or strings
-- Don't create overly complex abstractions
-- Don't skip error handling for "simple" operations
-- Don't hardcode configuration values
-- Don't write code without tests for critical paths
-
----
-
-
-# Code Quality Standards
-
-## Error Handling
-
-Always handle errors explicitly. Never use empty catch blocks or ignore errors.
+### Component Documentation
 
 ```typescript
-// ❌ BAD
-try {
-  await fetchData();
-} catch (e) {}
-
-// ✅ GOOD
-try {
-  await fetchData();
-} catch (error) {
-  logger.error('Failed to fetch data', { error });
-  throw new DataFetchError('Unable to retrieve data', { cause: error });
-}
+/**
+ * User list component displays a grid of users with filtering and actions.
+ * 
+ * Features:
+ * - Pagination
+ * - Search/filter
+ * - User actions (edit, delete)
+ * 
+ * @component
+ */
+@Component({
+ selector: 'app-user-list',
+ templateUrl: './user-list.component.html'
+})
+export class UserListComponent {}
 ```
 
-### Error Handling Principles
+## CFW Integration
 
-- **Fail fast**: Detect invalid states early and fail immediately
-- **Provide context**: Include relevant information in error messages
-- **Use appropriate types**: Create specific error types for different failure modes
-- **Log appropriately**: Log errors with sufficient context for debugging
-- **Handle gracefully**: Where possible, provide fallbacks or user-friendly messages
-
-## Code Organization
-
-### Function Design
-
-- **Single responsibility**: Each function should do one thing well
-- **Small and focused**: Keep functions under 50 lines when possible
-- **Clear naming**: Function names should clearly describe what they do
-- **Avoid side effects**: Prefer pure functions when possible
+### Module Imports
 
 ```typescript
-// ❌ BAD
-function processUser(data) {
-  validate(data);
-  saveToDb(data);
-  sendEmail(data.email);
-  updateCache(data.id);
-  logActivity(data);
-}
+import { ButtonModule } from '@ucfw/components/button';
+import { GridModule } from '@ucfw/components/grid';
+import { AlertModule } from '@ucfw/components/alert';
+import { UThemeModule } from '@ucfw/styles';
 
-// ✅ GOOD
-function processUser(userData: UserData): void {
-  const validatedData = validateUserData(userData);
-  persistUser(validatedData);
-  notifyUser(validatedData.email);
-}
+@NgModule({
+ imports: [
+   CommonModule,
+   ButtonModule,
+   GridModule,
+   AlertModule,
+   UThemeModule.forRoot({
+     styleSheetContentRoot: 'assets/themes/'
+   })
+ ],
+ declarations: [UserListComponent]
+})
+export class UserModule {}
 ```
-
-### File Organization
-
-- **One main export per file**: Keep files focused on a single concept
-- **Group related code**: Keep related functions, types, and constants together
-- **Separate concerns**: Split business logic from presentation, data access from domain logic
-
-## Naming Conventions
-
-### Variables and Functions
-
-- Use descriptive names that explain intent
-- Prefer full words over abbreviations
-- Use verbs for functions, nouns for variables
-- Be consistent with naming patterns
-
-```typescript
-// ❌ BAD
-const d = new Date();
-function calc(x, y) { return x + y; }
-const usr = getUser();
-
-// ✅ GOOD
-const currentDate = new Date();
-function calculateTotal(price: number, tax: number): number {
-  return price + tax;
-}
-const user = getUser();
-```
-
-### Classes and Types
-
-- Use PascalCase for classes and types
-- Use descriptive names that indicate purpose
-- Avoid generic names like `Manager`, `Handler`, `Processor`
-
-```typescript
-// ❌ BAD
-class Manager {}
-class Handler {}
-interface Data {}
-
-// ✅ GOOD
-class UserRepository {}
-class PaymentProcessor {}
-interface UserProfile {}
-```
-
-## Complexity Guidelines
-
-### Cyclomatic Complexity
-
-- Keep functions simple: aim for complexity < 10
-- Extract complex logic into separate functions
-- Use early returns to reduce nesting
-
-```typescript
-// ❌ BAD
-function processOrder(order) {
-  if (order) {
-    if (order.items) {
-      if (order.items.length > 0) {
-        if (order.customer) {
-          if (order.customer.verified) {
-            // process order
-          }
-        }
-      }
-    }
-  }
-}
-
-// ✅ GOOD
-function processOrder(order: Order): void {
-  if (!order || !order.items?.length || !order.customer?.verified) {
-    throw new InvalidOrderError('Order validation failed');
-  }
-  executeOrderProcessing(order);
-}
-```
-
-### Cognitive Load
-
-- Minimize mental overhead: make code easy to understand at a glance
-- Avoid deep nesting: prefer early returns and guard clauses
-- Extract magic numbers: use named constants
-- Clarify intent: use intermediate variables for complex expressions
-
-## Code Smells to Avoid
-
-- **Long parameter lists**: Use objects or configuration objects instead
-- **God objects**: Classes that know or do too much
-- **Feature envy**: Functions that use more of another object's data than their own
-- **Duplication**: Extract common patterns into reusable functions
-- **Dead code**: Remove unused code, don't comment it out
 
 ## Best Practices
 
-- **Write self-documenting code**: Code should explain itself
-- **Keep it simple**: Prefer simple solutions over clever ones
-- **Refactor regularly**: Improve code quality incrementally
-- **Review before committing**: Check your own code before submitting
-- **Follow project conventions**: Consistency is important
+- Follow Angular style guide
+- Use OnPush change detection when possible
+- Implement proper error handling
+- Use RxJS operators effectively
+- Keep components focused and small
+- Separate concerns (presentation vs business logic)
+- Use TypeScript strict mode
+- Follow CFW design system guidelines
+- Write comprehensive tests
+- Document complex logic
+
+## Common Patterns
+
+### Error Handling
+
+```typescript
+this.userService.getUsers()
+ .pipe(
+   catchError(error => {
+     this.logger.error('Failed to load users', error);
+     this.showError('Unable to load users. Please try again.');
+     return of([]);
+   })
+ )
+ .subscribe(users => this.users = users);
+```
+
+### Loading States
+
+```typescript
+loading = false;
+
+loadData(): void {
+ this.loading = true;
+ this.dataService.getData()
+   .pipe(finalize(() => this.loading = false))
+   .subscribe(data => this.data = data);
+}
+```
+
+### Form Handling
+
+```typescript
+form = this.fb.group({
+ email: ['', [Validators.required, Validators.email]],
+ name: ['', Validators.required]
+});
+
+onSubmit(): void {
+ if (this.form.valid) {
+   this.userService.createUser(this.form.value)
+     .subscribe(user => this.handleSuccess(user));
+ }
+}
+```
 
 ---
 
 
-# Documentation Standards
-
-## Code Comments
-
-### When to Comment
-
-- **Explain "why", not "what"**: Code should be self-explanatory
-- **Document complex algorithms**: Explain non-obvious logic
-- **Clarify business rules**: Document domain-specific decisions
-- **Note workarounds**: Explain temporary fixes or known issues
-- **API documentation**: Document public interfaces
-
-### Comment Guidelines
-
-```typescript
-// ❌ BAD - Comments the obvious
-// Increment counter by 1
-counter++;
-
-// ✅ GOOD - Explains why
-// Use bitwise OR for faster flag combination
-// See: https://example.com/performance-analysis
-flags |= FLAG_ENABLED;
-
-// ❌ BAD - Outdated comment
-// TODO: Fix this bug (fixed in commit abc123)
-
-// ✅ GOOD - Explains business logic
-// Round down to nearest cent to match accounting system requirements
-const amount = Math.floor(price * 100) / 100;
-```
-
-### Comment Types
-
-- **Inline comments**: Brief explanations on the same line
-- **Block comments**: Multi-line explanations for complex logic
-- **Function documentation**: JSDoc/TSDoc for public APIs
-- **File headers**: Copyright, license, purpose (when needed)
-
-### Function Documentation
-
-```typescript
-// ✅ GOOD - JSDoc/TSDoc format
-/**
- * Calculates the total price including tax.
- * 
- * @param basePrice - The base price before tax
- * @param taxRate - The tax rate as a decimal (e.g., 0.08 for 8%)
- * @returns The total price including tax, rounded to 2 decimal places
- * @throws {ValidationError} If basePrice is negative or taxRate is invalid
- * 
- * @example
- * ```typescript
- * const total = calculateTotalWithTax(100, 0.08);
- * // Returns: 108.00
- * ```
- */
-function calculateTotalWithTax(basePrice: number, taxRate: number): number {
-  if (basePrice < 0) {
-    throw new ValidationError('Base price cannot be negative');
-  }
-  if (taxRate < 0 || taxRate > 1) {
-    throw new ValidationError('Tax rate must be between 0 and 1');
-  }
-  return Math.round((basePrice * (1 + taxRate)) * 100) / 100;
-}
-```
-
-## README Structure
-
-### Essential Sections
-
-```markdown
-# Project Name
-
-Brief one-line description of what the project does.
-
-## Features
-
-- Key feature 1
-- Key feature 2
-- Key feature 3
-
-## Installation
-
-Step-by-step installation instructions.
-
-## Usage
-
-Basic usage examples.
-
-## Configuration
-
-Configuration options and environment variables.
-
-## Development
-
-How to set up development environment.
-
-## Testing
-
-How to run tests.
-
-## Contributing
-
-Guidelines for contributors.
-
-## License
-
-License information.
-```
-
-### README Best Practices
-
-- **Start with purpose**: What does this project do?
-- **Include examples**: Show how to use the project
-- **Keep it updated**: Update README when code changes
-- **Use clear structure**: Organize with headers and lists
-- **Add badges**: Build status, version, license
-- **Include screenshots**: For UI projects
-- **Link to docs**: For detailed documentation
-
-## API Documentation
-
-### REST API Documentation
-
-```markdown
-## API Endpoints
-
-### POST /api/users
-
-Create a new user.
-
-**Request Body:**
-```json
-{
-  "email": "user@example.com",
-  "name": "John Doe",
-  "password": "securepassword"
-}
-```
-
-**Response (201 Created):**
-```json
-{
-  "id": "123",
-  "email": "user@example.com",
-  "name": "John Doe",
-  "createdAt": "2024-01-01T00:00:00Z"
-}
-```
-
-**Errors:**
-- `400 Bad Request`: Invalid input data
-- `409 Conflict`: Email already exists
-```
-
-### API Documentation Standards
-
-- **Document all endpoints**: Include request/response formats
-- **Show examples**: Provide curl or code examples
-- **Document errors**: List possible error responses
-- **Include authentication**: Explain auth requirements
-- **Version APIs**: Use versioning for breaking changes
-
-## Code Documentation Tools
-
-### TypeScript/JavaScript
-
-- **JSDoc/TSDoc**: Standard documentation format
-- **TypeDoc**: Generate HTML documentation from comments
-- **ESDoc**: Alternative documentation generator
-
-### Python
-
-- **Docstrings**: Use PEP 257 style
-- **Sphinx**: Generate documentation from docstrings
-- **pydoc**: Built-in documentation generator
-
-### General
-
-- **Markdown**: For README and guides
-- **OpenAPI/Swagger**: For API documentation
-- **Architecture Decision Records (ADRs)**: Document decisions
-
-## Documentation Maintenance
-
-### Keep Documentation Updated
-
-- **Update with code changes**: Don't let docs get stale
-- **Review during code review**: Check if docs need updates
-- **Remove outdated docs**: Delete or archive old documentation
-- **Version documentation**: Keep docs aligned with code versions
-
-### Documentation Review Checklist
-
-- [ ] README is up-to-date
-- [ ] API documentation matches implementation
-- [ ] Code comments explain complex logic
-- [ ] Examples work and are current
-- [ ] Installation instructions are accurate
-- [ ] Configuration options are documented
-- [ ] Breaking changes are noted
-
-## Writing Good Documentation
-
-### Clarity
-
-- **Use simple language**: Avoid jargon when possible
-- **Be concise**: Get to the point quickly
-- **Use examples**: Show, don't just tell
-- **Organize logically**: Group related information
-
-### Completeness
-
-- **Cover all use cases**: Document common scenarios
-- **Include edge cases**: Note limitations and gotchas
-- **Provide context**: Explain when and why to use features
-- **Link related docs**: Connect related information
-
-### Accuracy
-
-- **Test examples**: Ensure code examples work
-- **Verify facts**: Check that information is correct
-- **Update regularly**: Keep documentation current
-- **Review carefully**: Proofread before publishing
-
-## Documentation Anti-Patterns
-
-- **Don't comment obvious code**: `// Set x to 5` is useless
-- **Don't duplicate code in comments**: Comments should add value
-- **Don't leave TODOs**: Either do it or create an issue
-- **Don't write novels**: Keep comments concise
-- **Don't forget to update**: Outdated docs are worse than no docs
-
----
-
-
-# Git Conventions
+# Git Commit Instructions (Conventional Commits)
 
 ## Commit Message Format
 
-Use [Conventional Commits](https://www.conventionalcommits.org/) format:
-
+Structure:
 ```
-<type>(<scope>): <subject>
+<type>(<scope>): <description> [<TICKET-NUMBER> /fixed]
 
-<body>
+[optional body]
 
-<footer>
+[optional footer(s)]
 ```
 
-### Commit Types
+## Types
 
-- **feat**: New feature
-- **fix**: Bug fix
-- **docs**: Documentation changes
-- **style**: Code style changes (formatting, semicolons, etc.)
-- **refactor**: Code refactoring without changing functionality
-- **test**: Adding or updating tests
-- **chore**: Maintenance tasks, dependency updates
-- **perf**: Performance improvements
-- **ci**: CI/CD changes
-- **build**: Build system changes
+- **feat**: a new feature
+- **fix**: a bug fix
+- **docs**: documentation only changes
+- **style**: changes that do not affect the meaning of the code (formatting, missing semicolons, etc.)
+- **refactor**: a code change that neither fixes a bug nor adds a feature
+- **perf**: a code change that improves performance
+- **test**: adding missing tests or correcting existing tests
+- **build**: changes that affect the build system or external dependencies (Maven, npm, yarn)
+- **ci**: changes to CI configuration files and scripts
+- **chore**: other changes that don't modify src or test files
 
-### Examples
+## Ticket Number
+
+Always include the ticket number from your branch name:
+- For HDEFECT tickets: `[HDEFECT-12345 /fixed]`
+- For HFW tickets: `[HFW-5460 /fixed]`
+
+### Extracting Ticket Number from Branch Name
+
+Example branch name:
+```
+HFW-5460_provide_ORBIS_U_Platform_Metadata  ->  HFW-5460
+```
+
+Extract the ticket prefix and number from the beginning of the branch name.
+
+## Examples
 
 ```bash
-# Good commit messages
-feat(auth): add JWT token validation
-fix(api): resolve null pointer exception in user endpoint
-docs(readme): update installation instructions
-refactor(utils): extract date formatting logic
-test(auth): add unit tests for token validation
+feat(api): add user authentication endpoint [HFW-5460 /fixed]
 
-# Bad commit messages
-update code
-fix bug
-changes
-WIP
+fix(ui): resolve null pointer exception in user profile [HDEFECT-789 /fixed]
+
+docs(readme): update installation instructions [HFW-5460 /fixed]
+
+refactor(service): simplify data validation logic [HFW-5460 /fixed]
 ```
 
-### Commit Message Guidelines
+## Guidelines
 
-- **Subject line**: 
-  - Use imperative mood ("add" not "added" or "adds")
-  - First letter lowercase (unless starting with proper noun)
-  - No period at the end
-  - Maximum 72 characters
-  
-- **Body** (optional):
-  - Explain "what" and "why", not "how"
-  - Wrap at 72 characters
-  - Separate from subject with blank line
-  
-- **Footer** (optional):
-  - Reference issues: `Closes #123`
-  - Breaking changes: `BREAKING CHANGE: description`
+- Use the imperative mood in the description ("add" not "added")
+- Don't capitalize the first letter of the description
+- No period at the end of the description
+- Keep the first line under 72 characters
+- Add detailed explanation in the body if needed
+- Reference breaking changes in the footer with:
+  ```
+  BREAKING CHANGE: <description>
+  ```
 
-### Complete Example
+## Complete Example
 
 ```
-feat(api): implement user authentication endpoint
+feat(auth): implement JWT token validation [HFW-5460 /fixed]
 
 Add POST /api/auth/login endpoint with JWT token generation.
 Includes input validation and error handling.
 
-Closes #42
+BREAKING CHANGE: Authentication now requires API key in header.
 ```
 
 ## Branch Naming
 
-Use descriptive branch names with prefixes:
-
-### Branch Prefixes
-
-- `feature/` - New features
-- `fix/` - Bug fixes
-- `hotfix/` - Urgent production fixes
-- `docs/` - Documentation updates
-- `refactor/` - Code refactoring
-- `test/` - Test additions/changes
-- `chore/` - Maintenance tasks
-
-### Examples
-
-```bash
-feature/user-authentication
-fix/login-validation-error
-docs/api-documentation
-refactor/payment-processing
-hotfix/security-patch
-```
-
-### Branch Naming Guidelines
-
-- Use kebab-case (lowercase with hyphens)
-- Be descriptive but concise
-- Include issue number if applicable: `feature/123-user-dashboard`
-- Avoid generic names: `update`, `changes`, `fix`
-
-## Pull Request Conventions
-
-### PR Title
-
-Follow commit message format:
-
-```
-feat(auth): add password reset functionality
-```
-
-### PR Description Template
-
-```markdown
-## Description
-Brief description of changes
-
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Breaking change
-- [ ] Documentation update
-
-## Testing
-- [ ] Unit tests added/updated
-- [ ] Integration tests added/updated
-- [ ] Manual testing completed
-
-## Checklist
-- [ ] Code follows project style guidelines
-- [ ] Self-review completed
-- [ ] Comments added for complex logic
-- [ ] Documentation updated
-- [ ] No new warnings generated
-- [ ] Tests pass locally
-```
-
-### PR Best Practices
-
-- **Keep PRs focused**: One logical change per PR
-- **Write clear descriptions**: Explain what and why
-- **Link related issues**: Reference issues being addressed
-- **Request reviews**: Get feedback before merging
-- **Keep PRs small**: Easier to review and merge
-- **Update documentation**: Include docs changes when needed
-- **Ensure tests pass**: All CI checks should pass
-
-## Git Workflow
-
-### Before Committing
-
-1. **Review changes**: `git diff` or `git status`
-2. **Stage selectively**: `git add <file>` not `git add .`
-3. **Write clear message**: Follow commit message format
-4. **Test locally**: Ensure code works before committing
-
-### Commit Frequency
-
-- **Commit often**: Small, logical commits are better
-- **Commit related changes together**: Don't mix unrelated changes
-- **Don't commit broken code**: Fix issues before committing
-- **Don't commit temporary files**: Use `.gitignore`
-
-### Branch Management
-
-- **Create branches from main**: Start fresh from latest main
-- **Keep branches up to date**: Regularly merge/rebase from main
-- **Delete merged branches**: Clean up after merging
-- **Use descriptive names**: Make purpose clear
-
-## .gitignore Best Practices
-
-Include common patterns:
-
-```
-# Dependencies
-node_modules/
-vendor/
-*.lock
-
-# Build outputs
-dist/
-build/
-*.o
-*.exe
-
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Environment files
-.env
-.env.local
-*.key
-
-# OS files
-.DS_Store
-Thumbs.db
-```
-
-## Tagging
-
-Use semantic versioning for tags:
-
-```
-v1.0.0
-v1.1.0
-v2.0.0
-```
-
-Tag important releases:
-- Major releases
-- Security patches
-- Significant milestones
+Follow Dedalus branch naming conventions:
+- Feature branches: `HFW-<number>_<description>` or `HDEFECT-<number>_<description>`
+- Use kebab-case for description: `HFW-5460_provide_platform_metadata`
+- Extract ticket number from branch name for commit messages
 
 ---
 
@@ -848,270 +1070,3 @@ logger.info("✅ Request completed in %d ms", duration)
 - **One per message**: Use a single, clear emoji per log line; avoid multiple or decorative emojis.
 - **Structured fields**: Keep emojis in the message; do not put them in structured fields (e.g. `error`, `context`) unless the logging format expects it.
 - **Sensitive data**: Never log secrets or PII; emoji usage does not change existing security rules for log content.
-
----
-
-
-# Security Best Practices
-
-## Secret Management
-
-### Never Hardcode Secrets
-
-```typescript
-// ❌ BAD
-const apiKey = "sk_live_1234567890abcdef";
-const password = "admin123";
-const dbPassword = "mypassword";
-
-// ✅ GOOD
-const apiKey = process.env.API_KEY;
-const password = process.env.ADMIN_PASSWORD;
-const dbPassword = process.env.DB_PASSWORD;
-```
-
-### Secret Storage Guidelines
-
-- **Use environment variables**: Store secrets in `.env` files (not committed)
-- **Use secret management services**: AWS Secrets Manager, HashiCorp Vault, etc.
-- **Never commit secrets**: Add `.env` to `.gitignore`
-- **Rotate secrets regularly**: Update credentials periodically
-- **Use different secrets per environment**: Dev, staging, production
-
-### Environment Files
-
-```bash
-# .env (not committed)
-API_KEY=your_secret_key
-DB_PASSWORD=your_db_password
-JWT_SECRET=your_jwt_secret
-
-# .env.example (committed as template)
-API_KEY=
-DB_PASSWORD=
-JWT_SECRET=
-```
-
-## Input Validation
-
-### Validate All Inputs
-
-```typescript
-// ❌ BAD
-function createUser(email: string, age: number) {
-  // No validation - dangerous!
-  db.users.create({ email, age });
-}
-
-// ✅ GOOD
-function createUser(email: string, age: number): void {
-  if (!isValidEmail(email)) {
-    throw new ValidationError('Invalid email format');
-  }
-  if (age < 0 || age > 150) {
-    throw new ValidationError('Invalid age');
-  }
-  db.users.create({ email, age });
-}
-```
-
-### Validation Principles
-
-- **Validate on the server**: Never trust client-side validation alone
-- **Whitelist, don't blacklist**: Allow only known good values
-- **Validate type and format**: Check data types and formats
-- **Sanitize inputs**: Remove or escape dangerous characters
-- **Validate length**: Prevent buffer overflows and DoS attacks
-
-### Common Validation Patterns
-
-```typescript
-// Email validation
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-if (!emailRegex.test(email)) {
-  throw new ValidationError('Invalid email');
-}
-
-// SQL injection prevention - use parameterized queries
-// ❌ BAD
-db.query(`SELECT * FROM users WHERE id = ${userId}`);
-
-// ✅ GOOD
-db.query('SELECT * FROM users WHERE id = ?', [userId]);
-
-// XSS prevention - escape output
-const safeHtml = escapeHtml(userInput);
-```
-
-## SQL Injection Prevention
-
-### Use Parameterized Queries
-
-```typescript
-// ❌ BAD - SQL injection vulnerability
-db.query(`SELECT * FROM users WHERE email = '${email}'`);
-
-// ✅ GOOD - Parameterized query
-db.query('SELECT * FROM users WHERE email = ?', [email]);
-
-// ✅ GOOD - Using ORM
-User.findOne({ where: { email } });
-```
-
-### ORM Best Practices
-
-- Use ORM query builders instead of raw SQL
-- Let ORM handle parameterization
-- Validate inputs before database operations
-- Use transactions for related operations
-
-## XSS Prevention
-
-### Escape User Input
-
-```typescript
-// ❌ BAD - XSS vulnerability
-document.innerHTML = userComment;
-
-// ✅ GOOD - Escape HTML
-document.textContent = userComment;
-// Or use a library
-document.innerHTML = escapeHtml(userComment);
-```
-
-### Content Security Policy
-
-Set appropriate CSP headers:
-
-```
-Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'
-```
-
-## Authentication & Authorization
-
-### Password Security
-
-```typescript
-// ❌ BAD - Plain text passwords
-const password = req.body.password;
-db.users.create({ password });
-
-// ✅ GOOD - Hash passwords
-import bcrypt from 'bcrypt';
-const hashedPassword = await bcrypt.hash(password, 10);
-db.users.create({ password: hashedPassword });
-```
-
-### Authentication Best Practices
-
-- **Hash passwords**: Use bcrypt, argon2, or similar
-- **Use strong algorithms**: Prefer bcrypt with cost factor 10+
-- **Implement rate limiting**: Prevent brute force attacks
-- **Use secure sessions**: HttpOnly, Secure cookies
-- **Implement 2FA**: Two-factor authentication for sensitive operations
-
-### Authorization Checks
-
-```typescript
-// ❌ BAD - No authorization check
-function deleteUser(userId: string) {
-  db.users.delete(userId);
-}
-
-// ✅ GOOD - Check permissions
-function deleteUser(userId: string, requesterId: string): void {
-  if (requesterId !== userId && !isAdmin(requesterId)) {
-    throw new AuthorizationError('Not authorized');
-  }
-  db.users.delete(userId);
-}
-```
-
-## Dependency Security
-
-### Keep Dependencies Updated
-
-```bash
-# Check for vulnerabilities
-npm audit
-npm audit fix
-
-# Update dependencies regularly
-npm update
-
-# Use dependency scanning tools
-# Snyk, Dependabot, etc.
-```
-
-### Dependency Management
-
-- **Review dependencies**: Understand what you're including
-- **Use lock files**: Commit `package-lock.json` or `yarn.lock`
-- **Pin critical dependencies**: Specify exact versions for security-critical packages
-- **Remove unused dependencies**: Reduce attack surface
-- **Monitor for vulnerabilities**: Set up automated scanning
-
-## HTTPS & TLS
-
-- **Always use HTTPS**: Never transmit sensitive data over HTTP
-- **Use strong TLS versions**: TLS 1.2 minimum, prefer TLS 1.3
-- **Validate certificates**: Verify SSL certificates
-- **Use secure headers**: HSTS, CSP, etc.
-
-## Error Handling Security
-
-### Don't Expose Sensitive Information
-
-```typescript
-// ❌ BAD - Exposes internal details
-catch (error) {
-  res.status(500).json({ 
-    error: error.message,
-    stack: error.stack,
-    sql: error.sql 
-  });
-}
-
-// ✅ GOOD - Generic error messages
-catch (error) {
-  logger.error('Database error', { error, userId });
-  res.status(500).json({ 
-    error: 'An error occurred. Please try again later.' 
-  });
-}
-```
-
-### Secure Error Handling
-
-- **Log errors securely**: Include context in logs, not responses
-- **Use generic messages**: Don't reveal system internals
-- **Handle errors gracefully**: Don't crash on errors
-- **Monitor error logs**: Track security-related errors
-
-## Common Vulnerabilities
-
-### OWASP Top 10 Awareness
-
-1. **Broken Access Control**: Always verify permissions
-2. **Cryptographic Failures**: Use strong encryption
-3. **Injection**: Validate and sanitize inputs
-4. **Insecure Design**: Design with security in mind
-5. **Security Misconfiguration**: Secure default configurations
-6. **Vulnerable Components**: Keep dependencies updated
-7. **Authentication Failures**: Implement strong auth
-8. **Software and Data Integrity**: Verify integrity
-9. **Security Logging Failures**: Log security events
-10. **SSRF**: Validate and restrict server requests
-
-## Security Checklist
-
-- [ ] No secrets in code or committed files
-- [ ] All inputs validated and sanitized
-- [ ] Parameterized queries used for databases
-- [ ] Passwords hashed with strong algorithms
-- [ ] HTTPS used for all connections
-- [ ] Dependencies updated and scanned
-- [ ] Error messages don't expose sensitive info
-- [ ] Authentication and authorization implemented
-- [ ] Security headers configured
-- [ ] Regular security audits performed
