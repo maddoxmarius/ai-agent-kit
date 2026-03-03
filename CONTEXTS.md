@@ -42,7 +42,7 @@ Using Dedalus CFW?  YES → dedalus
 
 ### skills/ (shared)
 
-- Code review, commit messages, error handling, jira-issue-details, testing (installed for Cursor only)
+- Code review, commit messages, error handling, jira-issue-details, testing, frontend-design (installed for Cursor only)
 
 ## Examples
 
