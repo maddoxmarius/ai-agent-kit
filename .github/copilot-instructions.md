@@ -70,6 +70,30 @@ import { GridModule } from '@ucfw/components/grid';
 - Test critical user flows
 - Document complex business logic
 
+## Java Coding (DH Guideline)
+
+### Style
+- Follow Google Java Style Guide with Dedalus deviations: 4-space indent, 120-char column limit, 8-space continuation lines
+- No multiple consecutive blank lines; annotations on their own line
+- Import order: `java.*` → other non-static → static (each group alphabetically, separated by blank lines)
+- Every `.java` file must start with the DH copyright header
+
+### Logging
+- Use SLF4J only — never `System.out` / `System.err`
+- Cache logger: `private static final Logger LOG = LoggerFactory.getLogger(MyClass.class);`
+- Use parameterized messages: `LOG.debug("Value: {}", val);` — never string concatenation
+- Log `ERROR`/`WARN` for technical exceptions only; use `DEBUG`/`INFO` for user-facing conditions
+- Do not log and rethrow — log once, at the point of handling
+
+### Exception Handling
+- Throw only for abnormal conditions, never for expected control flow
+- Always include a descriptive message and pass the original exception as cause when wrapping
+- Use specific exception types; catch `Exception` only as a last resort
+- Use `NullPointerException` / `IllegalArgumentException` on public methods — never Java `assert`
+- Keep `throws` clauses stable: declare the parent type, not every subclass
+- Never swallow exceptions or discard the original stack trace
+
+
 ---
 
 
