@@ -12,12 +12,6 @@ Follow the [Google Java Style Guide](https://google.github.io/styleguide/javagui
 - **Blank lines**: multiple consecutive blank lines are not permitted
 - **Switch blocks**: contents indented +4 (same as any other block)
 - **Annotations**: do not place annotations on the same line as a property declaration
-- **Import order**:
-  1. Non-static `java.*` imports, alphabetically
-  2. Blank line
-  3. Other non-static imports, alphabetically
-  4. Blank line
-  5. Static imports, alphabetically
 
 ## File Header
 
