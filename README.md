@@ -14,7 +14,7 @@ See [CONTEXTS.md](CONTEXTS.md) for when to use which set.
 - **rules/** – Single source of truth (no IDE-specific paths)
   - **rules/private/** – Private rule set
   - **rules/dedalus/** – Dedalus rule set
-- **skills/** – Shared Cursor and Copilot skills (code review, commit messages, error handling, Jira issue details and work lists, testing, frontend design, UCFW components)
+- **skills/** – Shared Cursor and Copilot skills (code review, commit messages, error handling, Jira issue details and work lists, testing, frontend design, UCFW components, dedalus-u-agent)
 - **scripts/** – Install scripts for each IDE
 
 ## Quick Start
@@ -86,6 +86,7 @@ See [CONTEXTS.md](CONTEXTS.md) for choosing between private and Dedalus rule set
 - **WSL Git Worktree**: Create or repair native WSL Git worktrees for Dedalus work (`orbisudev`), with authenticated origin access, standard fetching, explicit upstream tracking and a working `git pull`
 - **orbis-platform-server ASIT**: Run orbis-platform-server Arquillian server integration tests (a single class/method, a module, or all) locally in WSL exactly like the Jenkins INTEGRATION job (`-PASIT-remote`, JDK 21, OAS test container, shared test DB)
 - **UCFW Components**: Use the UCFW MCP server as the authoritative source for ORBIS U components, APIs, examples, accessibility, icons, design patterns, and version compatibility
+- **Dedalus U Agent**: Dedalus-specific branch naming guidance for U-agent workflows
 
 ## Contributing
 
