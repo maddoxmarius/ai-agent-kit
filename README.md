@@ -14,7 +14,7 @@ See [CONTEXTS.md](CONTEXTS.md) for when to use which set.
 - **rules/** – Single source of truth (no IDE-specific paths)
   - **rules/private/** – Private rule set
   - **rules/dedalus/** – Dedalus rule set
-- **skills/** – Cursor skills (code review, commit messages, error handling, Jira issue details, testing, frontend-design)
+- **skills/** – Cursor skills (code review, commit messages, error handling, Jira issue details, testing, frontend-design, dedalus-u-agent)
 - **scripts/** – Install scripts for each IDE
 
 ## Quick Start
@@ -82,6 +82,7 @@ See [CONTEXTS.md](CONTEXTS.md) for choosing between private and Dedalus rule set
 - **Jira Issue Details**: Fetch and summarize Jira tickets by key or URL (requires Jira/Atlassian MCP in the project)
 - **Testing**: Test structure, coverage guidelines, test naming conventions
 - **Frontend Design**: Create distinctive, production-grade frontend interfaces and components with strong, non-generic aesthetics for web UIs, pages, and applications
+- **Dedalus U Agent**: Dedalus-specific branch naming guidance for U-agent workflows
 
 ## Contributing
 
