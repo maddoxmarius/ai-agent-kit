@@ -1,6 +1,6 @@
 # Setup Guide
 
-Integrate the AI Agent Kit into your project using the install scripts. All rules live in **rules/**; scripts copy them into the right places for Cursor and for VSCode (GitHub Copilot).
+Integrate the AI Agent Kit into your project using the install scripts. All rules live in **rules/**; scripts copy them into the right places for Cursor and for VS Code (GitHub Copilot). Shared skills live in **skills/**.
 
 ## Prerequisites
 
@@ -52,6 +52,15 @@ This creates/updates:
 This creates/updates:
 - `.github/copilot-instructions.md` from `rules/<context>/_main.md`
 - `.github/instructions/*.instructions.md` from `rules/<context>/*.instructions.md`
+- `.github/skills/<skill>/SKILL.md` and supporting files from `skills/<skill>/`
+
+Copilot loads the repository instructions and makes the skills available on demand. The `dedalus` context selects the Dedalus/CFW instructions; the shared skills are the same for both contexts. Existing `.agents/skills/` (for example, Angular skills) are left untouched.
+
+If you already have customized instructions and only need to install or refresh skills, run:
+
+```bash
+.ai-agent-kit/scripts/install-copilot.sh dedalus --skills-only
+```
 
 ### 4. Commit
 
@@ -62,7 +71,7 @@ git commit -m "Add AI Agent Kit (scripts install)"
 
 ## Script behavior
 
-- **Idempotent**: Safe to run again; overwrites existing installed files.
+- **Idempotent**: Safe to run again; overwrites installed files of the same name but preserves unrelated skills. The default Copilot install overwrites existing instructions; `--skills-only` leaves them untouched.
 - **Kit path**: Scripts infer the kit path from their own location (e.g. when you run `.ai-agent-kit/scripts/install-cursor.sh`, the kit is `.ai-agent-kit`).
 - **Context**: First argument is `private` or `dedalus` (default: `private`).
 
@@ -74,6 +83,7 @@ If you prefer not to use scripts:
 2. Copy `skills/` to `.cursor/skills/`.
 3. Copy `rules/<context>/_main.md` to `.github/copilot-instructions.md`.
 4. Copy `rules/<context>/*.instructions.md` to `.github/instructions/` (keep the same filenames).
+5. Copy each `skills/<skill>/` directory to `.github/skills/<skill>/`, including its supporting files.
 
 ## Updating the kit
 
@@ -99,7 +109,7 @@ git commit -m "Update AI Agent Kit"
 - Restart Cursor.
 
 ### Copilot not applying instructions
-- Confirm: `ls .github/copilot-instructions.md .github/instructions/`.
+- Confirm: `ls .github/copilot-instructions.md .github/instructions/ .github/skills/`.
 - Restart VS Code / refresh GitHub.
 
 ### Wrong context (private vs dedalus)

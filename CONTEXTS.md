@@ -38,11 +38,11 @@ Using Dedalus CFW?  YES → dedalus
 
 - **Rules (Cursor)**: cfw-design-system.md, cfw-components.md, cfw-styling.md, dedalus-conventions.md, dedalus-git-conventions.md
 - **Copilot main**: _main.md → copilot-instructions.md
-- **Copilot path-specific**: cfw-design.instructions.md, cfw-components.instructions.md
+- **Copilot path-specific**: cfw-design.instructions.md, cfw-components.instructions.md, java.instructions.md
 
-### skills/ (shared)
+### skills/ (shared by Cursor and Copilot)
 
-- Code review, commit messages, error handling, jira-issue-details, testing, frontend-design (installed for Cursor only)
+- Code review, commit messages, error handling, jira-issue-details, testing, frontend-design, dedalus-create-defect, ucfw-components
 
 ## Examples
 
