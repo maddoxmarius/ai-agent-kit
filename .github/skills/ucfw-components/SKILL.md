@@ -64,7 +64,10 @@ Use the `ucfw-mcp-server` as the authoritative source for ORBIS U component APIs
 
 - Use documented `u-*` components and `u*` inputs.
 - Import from the exact package path shown by the version-matched API or examples.
-- Use UCFW semantic CSS variables and utilities; do not hardcode colors or recreate theme tokens.
+- Prefer existing predefined UCFW classes, utility classes, layout classes, and component variants before writing any custom CSS or SCSS.
+- Inspect nearby templates, shared styles, and the version-matched UCFW examples to find the appropriate predefined class before adding a new class.
+- Use custom CSS or SCSS only when the required behavior cannot be achieved with an existing UCFW component, variant, utility, or predefined class. Keep it minimal and document the specific gap it addresses.
+- Use UCFW semantic CSS variables in any necessary custom styles; do not hardcode colors, spacing, typography, or recreate theme tokens.
 - Follow established Header -> Toolbar -> Content and master/detail patterns when appropriate.
 - Keep business logic out of presentation components and preserve strict TypeScript typing.
 - Handle loading, empty, validation, error, disabled, read-only, and permission states explicitly.
