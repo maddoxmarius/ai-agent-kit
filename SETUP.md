@@ -37,7 +37,7 @@ git submodule add git@github.com:maddoxmarius/ai-agent-kit.git .ai-agent-kit
 
 This creates/updates:
 - `.cursor/rules/*.mdc` from `rules/<context>/*.md`
-- `.cursor/skills/` from `skills/` (includes jira-issue-details; that skill needs a Jira/Atlassian MCP server configured in the project to fetch tickets).
+- `.cursor/skills/` from `skills/` (includes jira-issue-details, which needs a Jira/Atlassian MCP server, and my-jira-work, which needs an authenticated Dedalus Jira MCP server).
 
 ### 3. VSCode / GitHub Copilot
 
