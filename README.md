@@ -14,7 +14,7 @@ See [CONTEXTS.md](CONTEXTS.md) for when to use which set.
 - **rules/** – Single source of truth (no IDE-specific paths)
   - **rules/private/** – Private rule set
   - **rules/dedalus/** – Dedalus rule set
-- **skills/** – Shared Cursor and Copilot skills (code review, commit messages, error handling, Jira issue details and work lists, testing, frontend design)
+- **skills/** – Shared Cursor and Copilot skills (code review, commit messages, error handling, Jira issue details and work lists, testing, frontend design, UCFW components)
 - **scripts/** – Install scripts for each IDE
 
 ## Quick Start
@@ -28,7 +28,7 @@ git submodule add git@github.com:maddoxmarius/ai-agent-kit.git .ai-agent-kit
 # Cursor: install rules + skills (private or dedalus)
 .ai-agent-kit/scripts/install-cursor.sh private
 
-# VSCode / GitHub Copilot: install instructions
+# VS Code / GitHub Copilot: install instructions and skills
 .ai-agent-kit/scripts/install-copilot.sh private
 ```
 
@@ -43,12 +43,12 @@ For Dedalus projects use `dedalus` instead of `private`:
 
 **Cursor** (install-cursor.sh): copies rules to `.cursor/rules/*.mdc` and skills to `.cursor/skills/`
 
-**VSCode / Copilot** (install-copilot.sh): copies `_main.md` to `.github/copilot-instructions.md` and `*.instructions.md` to `.github/instructions/`
+**VS Code / Copilot** (install-copilot.sh): copies `_main.md` to `.github/copilot-instructions.md`, `*.instructions.md` to `.github/instructions/`, and shared skills to `.github/skills/`. To preserve existing instructions, pass `dedalus --skills-only`.
 
 ## Verification
 
 - **Cursor**: `ls .cursor/rules/ .cursor/skills/`
-- **Copilot**: `ls .github/copilot-instructions.md .github/instructions/`
+- **Copilot**: `ls .github/copilot-instructions.md .github/instructions/ .github/skills/`
 
 ## Detailed Setup
 
@@ -83,6 +83,7 @@ See [CONTEXTS.md](CONTEXTS.md) for choosing between private and Dedalus rule set
 - **My Jira Work**: List open Jira issues for the current user or a named person (requires authenticated Dedalus Jira MCP)
 - **Testing**: Test structure, coverage guidelines, test naming conventions
 - **Frontend Design**: Create distinctive, production-grade frontend interfaces and components with strong, non-generic aesthetics for web UIs, pages, and applications
+- **UCFW Components**: Use the UCFW MCP server as the authoritative source for ORBIS U components, APIs, examples, accessibility, icons, design patterns, and version compatibility
 
 ## Contributing
 
