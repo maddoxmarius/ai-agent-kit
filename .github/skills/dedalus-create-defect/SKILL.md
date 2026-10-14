@@ -42,46 +42,46 @@ Generate a concise, descriptive title (not provided by the user) that:
 
 ### 4. Fill in the template
 
-Produce the defect using exactly this structure and section order (omit "Proposed Fix" entirely if you have no grounded suggestion — do not fabricate one):
+Format the defect description as Markdown, not Jira wiki markup. Use exactly this heading hierarchy and section order. Keep the title separate from the description. Omit the "Proposed Fix" section entirely if you have no grounded suggestion; do not fabricate one.
 
-```
-High-Level Summary
+```markdown
+## High-Level Summary
 
-<1-3 sentences: what the issue is, where it occurs, potential impact>
+<1-3 sentences: what the issue is, where it occurs, and its potential impact>
 
-Steps to Reproduce
+## Steps to Reproduce
 
 1. <step>
 2. <step>
 3. <step>
 
-Expected Result
+### Expected Result
 
 <what should happen>
 
-Actual Result
+### Actual Result
 
 <what actually happens; note if screenshots/recordings are available>
 
-Test Data (if available)
+## Test Data (if available)
 
 <anonymized test data, or "N/A" if none>
 
-Technical Information
+## Technical Information
 
-Platform/Operating System: <value or "Unknown">
-Browser/Device: <value or "Unknown">
-Environment: <test/staging/production/local or "Unknown">
-Build Number: <value or "Unknown">
-Logs: <attached/summarized logs with timestamps, or "None available">
+- **Platform/Operating System:** <value or "Unknown">
+- **Browser/Device:** <value or "Unknown">
+- **Environment:** <test/staging/production/local or "Unknown">
+- **Build Number:** <value or "Unknown">
+- **Logs:** <attached/summarized logs with timestamps, or "None available">
 
-Proposed Fix (optional)
+## Proposed Fix (optional)
 
-<possible cause(s) and areas to investigate, only if you have concrete grounds — omit section otherwise>
+<possible causes and areas to investigate, only if grounded>
 ```
 
-- If a field is genuinely unknown after asking the user, write "Unknown" (or "N/A" for Test Data) rather than leaving it blank or inventing a value.
-- Keep the High-Level Summary to 1-3 sentences as specified in the template.
+- Keep the High-Level Summary to 1-3 sentences.
+- If a field remains unknown after asking the user, write "Unknown" (or "N/A" for Test Data) rather than leaving it blank or inventing a value.
 
 ### 5. Create the defect
 
