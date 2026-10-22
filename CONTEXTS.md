@@ -42,7 +42,7 @@ Using Dedalus CFW?  YES → dedalus
 
 ### skills/ (shared by Cursor and Copilot)
 
-- Code review, commit messages, error handling, jira-issue-details, testing, frontend-design, dedalus-create-defect, wsl-git-worktree, ucfw-components
+- Code review, commit messages, error handling, jira-issue-details, testing, frontend-design, dedalus-create-defect, wsl-git-worktree, orbis-platform-server-asit, ucfw-components
 
 ## Examples
 
