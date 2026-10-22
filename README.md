@@ -84,6 +84,7 @@ See [CONTEXTS.md](CONTEXTS.md) for choosing between private and Dedalus rule set
 - **Testing**: Test structure, coverage guidelines, test naming conventions
 - **Frontend Design**: Create distinctive, production-grade frontend interfaces and components with strong, non-generic aesthetics for web UIs, pages, and applications
 - **WSL Git Worktree**: Create or repair native WSL Git worktrees for Dedalus work (`orbisudev`), with authenticated origin access, standard fetching, explicit upstream tracking and a working `git pull`
+- **orbis-platform-server ASIT**: Run orbis-platform-server Arquillian server integration tests (a single class/method, a module, or all) locally in WSL exactly like the Jenkins INTEGRATION job (`-PASIT-remote`, JDK 21, OAS test container, shared test DB)
 - **UCFW Components**: Use the UCFW MCP server as the authoritative source for ORBIS U components, APIs, examples, accessibility, icons, design patterns, and version compatibility
 
 ## Contributing
